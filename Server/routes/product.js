@@ -5,6 +5,6 @@ const productController=require("../controllers/product");
 
 router.get("/allProducts",wrapAsync(productController.getAllProducts));
 
-router.get(":productID",wrapAsync(productController.getSingleProduct));
+router.get("/:productID",wrapAsync(productController.getSingleProduct));
 
 module.exports=router;

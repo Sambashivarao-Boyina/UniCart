@@ -20,7 +20,7 @@ export default function Products(){
         <div className="p-4 flex flex-row  items-center  flex-wrap justify-evenly ">
             {
                 products && products.length ?
-                products.map((item)=><Link to={`/singleProduct/${item._id}`}><Product key={item._id} product={item}/></Link>)
+                products.map((item)=><Link to={`/singleProduct/${item._id}` } key={item._id} ><Product product={item}/></Link>)
                 :null
             }
         </div>
