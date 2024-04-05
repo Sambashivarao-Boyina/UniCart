@@ -8,5 +8,17 @@ module.exports.getAllProducts=async (req,res)=>{
 module.exports.getSingleProduct=async (req,res)=>{
     const {productID}=req.params;
     const product=await Product.findById(productID);
-    res.status(200).json({product});
+    return res.status(200).json({product});
+}
+
+module.exports.addNewProduct=async (req,res)=>{
+    const {product}=req.body;
+    
+    const newProduct=new Product(product);
+    try{
+        await newProduct.save();
+    }catch(err){
+        return res.status(500).json({error:"Cannot create the product"});
+    }
+    return res.status(200).json({message:"New Product is Created Successfully"});
 }

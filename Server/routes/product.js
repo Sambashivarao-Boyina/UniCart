@@ -7,4 +7,6 @@ router.get("/allProducts",wrapAsync(productController.getAllProducts));
 
 router.get("/:productID",wrapAsync(productController.getSingleProduct));
 
+router.post("/newproduct",wrapAsync(productController.addNewProduct))
+
 module.exports=router;
