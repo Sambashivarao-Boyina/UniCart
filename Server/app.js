@@ -9,14 +9,11 @@ if(process.env!=="production"){
     dotenv.config();
 }
 
-app.use(cors({
-    origin:"http://localhost:5173"
-}));
-app.use(express.json())
 
 
 //Routes
 const productRoute=require("./routes/product");
+const auth=require("./routes/auth");
 
 async function main() {
   await mongoose.connect(process.env.DB_Url);
@@ -27,7 +24,14 @@ main()
         console.log("Connected to Database");
     })
 
+//middlewares
 
+
+
+app.use(cors({
+    origin:"http://localhost:5173"
+}));
+app.use(express.json())
 
 
 app.get("/",(req,res)=>{
@@ -35,6 +39,7 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/product",productRoute);
+app.use("/auth",auth);
 
 
 app.get("*",(req,res,next)=>{

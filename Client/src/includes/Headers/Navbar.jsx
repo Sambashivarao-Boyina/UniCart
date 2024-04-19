@@ -8,6 +8,7 @@ export default function (){
             <div className="ml-auto flex gap-2">
                 <Link to={"/products"} className="text-white">Products</Link>
                 <Link to={"/addproduct"} className="text-white">Add Product</Link>
+                <Link to={"/sign-in"} className="text-white">SignIn</Link>
             </div>
             
         </nav>

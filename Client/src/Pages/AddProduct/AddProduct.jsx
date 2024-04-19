@@ -3,17 +3,45 @@ import productSchema from "./AddProductvalidation";
 import { Button, textarea } from "@material-tailwind/react";
 import {useFormik} from "formik";
 import axios from "axios";
+import { ToastContainer, Zoom, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddProduct(){
 
     
     const onSubmit= async (values,actions)=>{
-        console.log(values);
+        // console.log(values);
         let product=values;
-        console.log(actions);
-        await axios.post("http://localhost:8080/product/newproduct",{product});
-        console.log("submittted");
-        // actions.resetForm();
+        // console.log(actions);
+        try{
+            const res=await axios.post("http://localhost:8080/product/newproduct",{product});
+            const data=await res.data;
+            toast.success(data.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Zoom,
+            });
+        }catch(error){
+            toast.error(error.response.data.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Zoom,
+            });
+        }
+        
+        actions.resetForm();
     }
 
     const {values,errors,touched,isSubmitting,handleChange,handleBlur,handleSubmit}=useFormik({
@@ -38,16 +66,7 @@ export default function AddProduct(){
         onSubmit,
     })
 
-    const [formErros,setFormErros]=useState({});
-
-    function handleOnChange(e){
-        e.preventDefault();
-        setProduct(prev=>({
-            ...prev,
-            [e.target.name]:e.target.value
-        }))
-        
-    }
+  
 
    
 
@@ -66,7 +85,7 @@ export default function AddProduct(){
                         type="text"
                         
                     />
-                    {errors.title && touched.email  && <div className="mb-2 text-red-500 text-sm">{errors.title}</div>}
+                    {errors.title && touched.title  && <div className="mb-2 text-red-500 text-sm">{errors.title}</div>}
                     <label className="flex  w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-blue-500 before:border-blue-gray-200 peer-focus:before:!border-blue-500 after:border-blue-gray-200 peer-focus:after:!border-blue-500">
                         Enter Title
                     </label>
@@ -191,6 +210,19 @@ export default function AddProduct(){
                 <div>
                     <Button color="blue" disabled={isSubmitting} className="lg:text-lg" onClick={handleSubmit} fullWidth>Create Product</Button>
                 </div>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    transition={Zoom}
+                />
             </form>
         </div>
     );
