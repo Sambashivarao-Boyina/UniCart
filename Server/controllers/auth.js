@@ -56,14 +56,14 @@ module.exports.userSignIn=async (req,res)=>{
 module.exports.refreshToken=async (req,res)=>{
     const headers=req.headers.authorization;
     if (!headers || !headers.startsWith('Bearer ')) {
-        return res.status(401).json({message:"You are unotharized"});
+        return 
     }
     const tokenFound=headers.split(" ")[1];
     
     let id;
     jwt.verify(tokenFound,process.env.SECEAT_KEY,async (error,data)=>{
         if(error){
-            return res.status(401).json({message:"You are unotharized"})
+            return ;
         }
         id=data.id;
         
@@ -74,5 +74,6 @@ module.exports.refreshToken=async (req,res)=>{
         const {password,...rest}=currUser._doc;
         return res.status(200).json({user:rest,token});
     }
-    return res.json(401).json({message:"Unauthorixed"});
+    return ;
 }
+
