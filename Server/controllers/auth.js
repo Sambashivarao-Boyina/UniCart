@@ -1,7 +1,7 @@
 const User=require("../models/user");
 const bcrypt = require('bcryptjs');
 const jwt=require("jsonwebtoken");
-
+const Seller=require("../models/seller");
 
 module.exports.userSignUp=async (req,res)=>{
     const {user}=req.body;
@@ -22,11 +22,11 @@ module.exports.userSignUp=async (req,res)=>{
     const newUser=new User({...user,password:hashedPassword});
     const savedUser=await newUser.save();
 
-    const token=jwt.sign({id:savedUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
+    const token=jwt.sign({id:savedUser._id,person:"User"},process.env.SECEAT_KEY,{expiresIn:"7d"});
     
     const {password,...rest}=savedUser._doc;
 
-    return res.status(201).json({user:rest,token,message:"User created Successfully"});
+    return res.status(201).json({user:rest,token,message:"User created Successfully",isSuccess:true});
 }
 
 module.exports.accessRoute=async (req,res)=>{
@@ -39,18 +39,18 @@ module.exports.userSignIn=async (req,res)=>{
 
     const userExist=await User.findOne({email});
     if(!userExist){
-        return res.status(404).json({message:"User does't exist"});
+        return res.status(404).json({message:"User does't exist",isSuccess:false});
     }
     const isCorrect=await bcrypt.compare(password,userExist.password);
 
     if(!isCorrect){
-        return res.status(401).json({message:"Invaid Credientials"});
+        return res.status(401).json({message:"Invaid Credientials",isSuccess:false});
     }
     const {password:hashedPassword,...rest}=userExist._doc;
-    const token=jwt.sign({id:rest._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
+    const token=jwt.sign({id:rest._id,person:"User"},process.env.SECEAT_KEY,{expiresIn:"7d"});
    
 
-    return res.status(200).json({user:rest,token,message:"user successfully login"});
+    return res.status(200).json({user:rest,token,message:"user successfully login",isSuccess:true});
 }
 
 module.exports.refreshToken=async (req,res)=>{
@@ -61,18 +61,27 @@ module.exports.refreshToken=async (req,res)=>{
     const tokenFound=headers.split(" ")[1];
     
     let id;
+    let person;
     jwt.verify(tokenFound,process.env.SECEAT_KEY,async (error,data)=>{
         if(error){
             return ;
         }
         id=data.id;
+        person=data.person;
         
     });
     if(id){
-        const token=jwt.sign({id},process.env.SECEAT_KEY,{expiresIn:"7d"});
-        const currUser=await User.findById(id);
-        const {password,...rest}=currUser._doc;
-        return res.status(200).json({user:rest,token});
+        if(person=="User"){
+            const token=jwt.sign({id,person},process.env.SECEAT_KEY,{expiresIn:"7d"});
+            const currUser=await User.findById(id);
+            const {password,...rest}=currUser._doc;
+            return res.status(200).json({user:rest,token});
+        }else if(person=="Seller"){
+            const token=jwt.sign({id,person},process.env.SECEAT_KEY,{expiresIn:"7d"});
+            const currSeller=await Seller.findById(id);
+            const {password,...rest}=currSeller._doc;
+            return res.status(200).json({user:rest,token,isSuccess:true});
+        }
     }
     return ;
 }
@@ -92,7 +101,7 @@ module.exports.userGoogleAuth=async (req,res)=>{
     if(existingUser){
         const token=jwt.sign({id:existingUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
         const {password,...rest}=existingUser._doc;
-        return res.status(200).json({message:"User Login successfull",user:rest,token});
+        return res.status(200).json({message:"User Login successfull",user:rest,token,isSuccess:true});
     }
     const password=randomPassword();
     const salt=await bcrypt.genSalt(10);
@@ -102,7 +111,51 @@ module.exports.userGoogleAuth=async (req,res)=>{
 
     const {password:newpPassword,...rest}=createdUser._doc;
     const token=jwt.sign({id:existingUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
-    res.status(200).json({message:"Successfully Signup",user:rest,token});
-    
+    res.status(200).json({message:"Successfully Signup",user:rest,token,isSuccess:true});
 
+}
+
+module.exports.sellerSignUp=async (req,res)=>{
+    const {seller}=req.body;
+    
+    let existingSeller=await Seller.findOne({email:seller.email});
+    if(existingSeller){
+        return res.status(409).json({message:"Email Already exists",isSuccess:false});
+    }
+
+    existingSeller=await Seller.findOne({sellerName:seller.sellerName});
+    if(existingSeller){
+        return res.status(409).json({message:"SellerName Already exists",isSuccess:false});
+    }
+    
+    const salt=await bcrypt.genSalt(10);
+    const hashedPassword=await bcrypt.hash(seller.password,salt);
+
+    const newSeller=new Seller({...seller,password:hashedPassword});
+    const savedSeller=await newSeller.save();
+    
+    const token=jwt.sign({id:savedSeller._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
+    
+    const {password,...rest}=savedSeller._doc;
+
+    return res.status(201).json({seller:rest,token,message:"Seller created Successfully",isSuccess:true});
+
+}
+
+module.exports.sellerSignIn=async (req,res)=>{
+    const {email,password}=req.body;
+
+    const selerExist=await Seller.findOne({email});
+    if(!selerExist){
+        return res.status(404).json({message:"Seller does't exist",isSuccess:false});
+    }
+    const isCorrect=await bcrypt.compare(password,selerExist.password);
+
+    if(!isCorrect){
+        return res.status(401).json({message:"Invaid Credientials",isSuccess:false});
+    }
+    const {password:hashedPassword,...rest}=selerExist._doc;
+    const token=jwt.sign({id:rest._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
+   
+    return res.status(200).json({seller:rest,token,message:"seller successfully login",isSuccess:true});
 }

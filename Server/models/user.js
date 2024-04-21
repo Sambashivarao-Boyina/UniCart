@@ -18,6 +18,10 @@ const userSchema=new Schema({
     },
     phoneNumber:{
         type:String,
+    },
+    type:{
+        type:String,
+        default:"User",
     }
 
 })

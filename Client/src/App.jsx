@@ -12,6 +12,10 @@ import {useSelector,useDispatch} from "react-redux"
 import {signSuccess} from "../src/store/user/userSlice"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserSignInRoute from './PrivateRoutes/UserSignInRoute'
+import { Authentication } from './Pages/Authetication/Authentication'
+import SellerSignUp from './Pages/SellerSignUp/SellerSignUp'
+import SellerSignIn from './Pages/SellerSignIn/SellerSignIn'
 
 
 function App() {
@@ -44,9 +48,14 @@ function App() {
                 <Route exact path="/" element={<Products/>}/>
                 <Route exact path="/products" element={<Products/>}/>
                 <Route exact path="/singleProduct/:productId" element={<SingleProduct/>}/>
-                <Route exact path="/addproduct" element={<AddProduct/>}/>
+                <Route element={<UserSignInRoute/>}>
+                    <Route exact path="/addproduct" element={<AddProduct/>}/>
+                </Route>
                 <Route exact path="/sign-up" element={<SignUp/>}/>
                 <Route exact path="/sign-in" element={<SignIn/>}/>
+                <Route exact path="/seller-sign-up" element={<SellerSignUp/>}/>
+                <Route exact path="/seller-sign-in" element={<SellerSignIn/>}/>
+                <Route exact path="/authentication" element={<Authentication/>}/>
             </Routes>
             
         </>

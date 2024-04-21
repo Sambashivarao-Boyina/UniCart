@@ -13,8 +13,13 @@ export default function AddProduct(){
         // console.log(values);
         let product=values;
         // console.log(actions);
+        const token=localStorage.getItem("access_token");
         try{
-            const res=await axios.post("http://localhost:8080/product/newproduct",{product});
+            const res=await axios.post("http://localhost:8080/product/newproduct",{product},{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            });
             const data=await res.data;
             toast.success(data.message, {
                 position: "top-center",

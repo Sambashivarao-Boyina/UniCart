@@ -2,13 +2,25 @@ const mongoose=require("mongoose");
 const Schema=mongoose.Schema;
 
 const sellerSchema=new Schema({
-    SellerName:{
+    sellerName:{
         type:String,
         required:true,
         unique:true,
     },
-    PhoneNumber:{
+    email:{
         type:String,
         required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true,
+    },
+    type:{
+        type:String,
+        default:"Seller",
     }
 })
+
+const Seller=mongoose.model("Seller",sellerSchema);
+module.exports=Seller;

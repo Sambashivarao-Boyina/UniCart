@@ -4,7 +4,7 @@ import axios from "axios"
 import {signOut} from "../../store/user/userSlice"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Avatar } from "@material-tailwind/react";
 
 export default function (){
     const {currUser}=useSelector((state)=>state.user);
@@ -39,7 +39,9 @@ export default function (){
             <p  className="text-white text-2xl font-black">EcomNest</p>
             <div className="ml-auto flex gap-2">
                 <Link to={"/products"} className="text-white">Products</Link>
-                <Link to={"/addproduct"} className="text-white">Add Product</Link>
+                {
+                    currUser && <Link to={"/addproduct"} className="text-white">Add Product</Link>
+                }
                 {
                     currUser ?
                         <p onClick={handleSignOut} className="text-white cursor-pointer ">Sign-Out</p>

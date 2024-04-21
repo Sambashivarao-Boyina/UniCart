@@ -7,10 +7,12 @@ import {useDispatch} from "react-redux";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {signInFaliure,signSuccess,signInStart} from "../../store/user/userSlice"
+import { useNavigate } from 'react-router-dom';
 
 export default function UserGoogelAuth() {
 
     const dispatch=useDispatch();
+    const navigate=useNavigate();
 
     const randomNumber=()=>{
         let s="";
@@ -34,6 +36,7 @@ export default function UserGoogelAuth() {
             const data=await res.data;
             localStorage.setItem("access_token",data.token);
             dispatch(signSuccess(data.user));
+            navigate("/");
         }catch(error){
             toast.error(error.response.data.message, {
                 position: "top-center",

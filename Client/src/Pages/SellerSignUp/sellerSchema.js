@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
-const userSchema = yup.object({
-  username: yup
+const sellerSchema = yup.object({
+  sellerName: yup
     .string()
     .required("Enter username")
     .trim("user name should not empty")
@@ -17,4 +17,4 @@ const userSchema = yup.object({
     .min(6,"Atleast 6 characters"),
 });
 
-export default userSchema;
+export default sellerSchema;

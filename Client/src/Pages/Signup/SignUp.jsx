@@ -65,7 +65,7 @@ export function SignUp() {
         <section className="grid text-center h-screen items-center p-8">
         <div>
             <Typography variant="h3" color="blue-gray" className="mb-2">
-            Sign Up
+            User Sign Up
             </Typography>
         
             <form action="#" className="mx-auto max-w-[30rem] text-left">
