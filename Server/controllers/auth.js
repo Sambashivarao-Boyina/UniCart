@@ -77,3 +77,32 @@ module.exports.refreshToken=async (req,res)=>{
     return ;
 }
 
+function randomPassword(){
+    let s="";
+    for(let i=0;i<6;i++){
+        s+=Math.floor(Math.random()*10)
+    }
+    return s;
+}
+
+module.exports.userGoogleAuth=async (req,res)=>{
+    const {user}=req.body;
+   
+    const existingUser=await User.findOne({email:user.email});
+    if(existingUser){
+        const token=jwt.sign({id:existingUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
+        const {password,...rest}=existingUser._doc;
+        return res.status(200).json({message:"User Login successfull",user:rest,token});
+    }
+    const password=randomPassword();
+    const salt=await bcrypt.genSalt(10);
+    const hashedPassword=await bcrypt.hash(password,salt);
+    const newUser=new User({...user,password:hashedPassword});
+    const createdUser=await newUser.save();
+
+    const {password:newpPassword,...rest}=createdUser._doc;
+    const token=jwt.sign({id:existingUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
+    res.status(200).json({message:"Successfully Signup",user:rest,token});
+    
+
+}

@@ -10,10 +10,11 @@ export default function (){
     const {currUser}=useSelector((state)=>state.user);
     const dispatch=useDispatch();
 
-
+    
     const handleSignOut=async ()=>{
        
         try{
+            
             localStorage.removeItem("access_token");
             dispatch(signOut());
             toast.success("Logged-Out successfully", {

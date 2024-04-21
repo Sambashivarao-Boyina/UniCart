@@ -11,6 +11,7 @@ import { signInFaliure ,signInStart,signSuccess } from "../../store/user/userSli
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserGoogelAuth from "../UserGoogleAuth/UserGoogelAuth";
 
 export function SignUp() {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -156,19 +157,7 @@ export function SignUp() {
                     sign up
                 </Button>
                 
-                <Button
-                    variant="outlined"
-                    size="lg"
-                    className="mt-6 flex h-12 items-center justify-center gap-2"
-                    fullWidth
-                >
-                    <img
-                    src={`https://www.material-tailwind.com/logos/logo-google.png`}
-                    alt="google"
-                    className="h-6 w-6"
-                    />{" "}
-                    sign in with google
-                </Button>
+                <UserGoogelAuth/>
                 <Typography
                     variant="small"
                     color="gray"

@@ -9,6 +9,7 @@ import { signInFaliure ,signInStart,signSuccess } from "../../store/user/userSli
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserGoogelAuth from "../UserGoogleAuth/UserGoogelAuth";
 
 export function SignIn() {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -75,6 +76,7 @@ export function SignIn() {
                         type="email"
                         name="email"
                         placeholder="name@mail.com"
+                        required
                         className="w-full text-xl  placeholder:opacity-100 focus:border-t-black border-t-blue-gray-200"
                         labelProps={{
                             className: "hidden",
@@ -113,25 +115,14 @@ export function SignIn() {
                             )}
                             </i>
                         }
+                        required
                     />
                 </div>
                 <Button onClick={handleSubmit} color="gray" size="lg" className="mt-6" fullWidth>
                     sign in
                 </Button>
                 
-                <Button
-                    variant="outlined"
-                    size="lg"
-                    className="mt-6 flex h-12 items-center justify-center gap-2"
-                    fullWidth
-                >
-                    <img
-                        src={`https://www.material-tailwind.com/logos/logo-google.png`}
-                        alt="google"
-                        className="h-6 w-6"
-                    />{" "}
-                    sign in with google
-                </Button>
+                <UserGoogelAuth/>
                 <Typography
                     variant="small"
                     color="gray"
