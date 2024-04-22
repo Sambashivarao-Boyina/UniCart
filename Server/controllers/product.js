@@ -18,7 +18,7 @@ module.exports.addNewProduct=async (req,res)=>{
     try{
         await newProduct.save();
     }catch(err){
-        return res.status(500).json({error:"Cannot create the product"});
+        return res.status(500).json({error:"Cannot create the product",isSuccess:false});
     }
-    return res.status(200).json({message:"New Product is Created Successfully"});
+    return res.status(200).json({message:"New Product is Created Successfully",isSuccess:true});
 }

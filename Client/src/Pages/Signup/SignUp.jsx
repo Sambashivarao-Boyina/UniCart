@@ -26,11 +26,25 @@ export function SignUp() {
             dispatch(signInStart());
             const res=await axios.post("http://localhost:8080/auth/user-signup",{user});
             const data=await res.data;
-            localStorage.setItem("access_token",data.token);
-            dispatch(signSuccess(data.user));
-            
-                
-            navigate("/");
+            if(data.isSuccess){
+                localStorage.setItem("access_token",data.token);
+                dispatch(signSuccess(data.user));
+                navigate("/");
+            }else{
+                toast.error(error.response.data.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Zoom,
+                });
+                dispatch(signInFaliure(error.response.data.message)); 
+                dispatch(signInFaliure(data.message));
+            }
         }catch(error){
             toast.error(error.response.data.message, {
                 position: "top-center",

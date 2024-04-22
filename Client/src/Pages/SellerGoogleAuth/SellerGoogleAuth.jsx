@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {signInFaliure,signSuccess,signInStart} from "../../store/user/userSlice"
 import { useNavigate } from 'react-router-dom';
 
-export default function UserGoogelAuth() {
+export default function SellerGoogelAuth() {
 
     const dispatch=useDispatch();
     const navigate=useNavigate();
@@ -23,20 +23,36 @@ export default function UserGoogelAuth() {
     }
     const handleGoogleAuth=async ()=>{
         try{
+            
             dispatch(signInStart());
             const provider=new GoogleAuthProvider()
             const auth=getAuth(app);
             const result=await signInWithPopup(auth,provider);
             const randomString=randomNumber();
-            const user={
-                username:result._tokenResponse.firstName+randomString,
+            const seller={
+                sellerName:result._tokenResponse.firstName+randomString,
                 email:result._tokenResponse.email
             }
-            const res=await axios.post("http://localhost:8080/auth/user-google",{user});
+            const res=await axios.post("http://localhost:8080/auth/seller-google",{seller});
             const data=await res.data;
-            localStorage.setItem("access_token",data.token);
-            dispatch(signSuccess(data.user));
-            navigate("/");
+            if(data.isSuccess){
+                localStorage.setItem("access_token",data.token);
+                dispatch(signSuccess(data.seller));
+                navigate("/");
+            }else{
+                toast.error(data.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Zoom,
+                });
+                signInFaliure(error.response.data.message);
+            }
         }catch(error){
             toast.error(error.response.data.message, {
                 position: "top-center",
@@ -49,6 +65,7 @@ export default function UserGoogelAuth() {
                 theme: "light",
                 transition: Zoom,
             });
+            signInFaliure(error.response.data.message);
         }
     }
     return (

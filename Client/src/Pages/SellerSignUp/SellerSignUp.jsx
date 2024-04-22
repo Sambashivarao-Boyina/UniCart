@@ -11,6 +11,7 @@ import { signInFaliure ,signInStart,signSuccess } from "../../store/user/userSli
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SellerGoogelAuth from "../SellerGoogleAuth/SellerGoogleAuth";
 
 export function SellerSignUp() {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -26,12 +27,26 @@ export function SellerSignUp() {
             dispatch(signInStart());
             const res=await axios.post("http://localhost:8080/auth/seller-signup",{seller});
             const data=await res.data;
-            localStorage.setItem("access_token",data.token);
-            dispatch(signSuccess(data.seller));   
-
-            navigate("/");
+           
+            if(data.isSuccess){
+                localStorage.setItem("access_token",data.token);
+                dispatch(signSuccess(data.seller));   
+                navigate("/");
+            }else{
+                toast.error(error.response.data.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Zoom,
+                });
+                dispatch(signInFaliure(error.response.data.message)); 
+            }
         }catch(error){
-            console.log(error);
             toast.error(error.response.data.message, {
                 position: "top-center",
                 autoClose: 5000,
@@ -157,7 +172,7 @@ export function SellerSignUp() {
                     sign up
                 </Button>
                 
-              
+                <SellerGoogelAuth/>
                 <Typography
                     variant="small"
                     color="gray"

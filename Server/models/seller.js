@@ -20,6 +20,8 @@ const sellerSchema=new Schema({
         type:String,
         default:"Seller",
     }
+},{
+    timestamps:true
 })
 
 const Seller=mongoose.model("Seller",sellerSchema);

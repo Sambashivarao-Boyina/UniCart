@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import UserGoogelAuth from "../UserGoogleAuth/UserGoogelAuth";
 import {useFormik} from "formik";
 import signSellerSchema from "./signinSchema";
+import SellerGoogelAuth from "../SellerGoogleAuth/SellerGoogleAuth";
 
 export function SignIn() {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -26,8 +27,9 @@ export function SignIn() {
             dispatch(signInStart());
             const res=await axios.post("http://localhost:8080/auth/seller-signin",{email:seller.email,password:seller.password});
             const data=await res.data;
-            localStorage.setItem("access_token",data.token);
+           
             if(data.isSuccess){
+                localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.seller));
                 navigate("/");
             }else{
@@ -146,7 +148,7 @@ export function SignIn() {
                 <Button onClick={handleSubmit} disabled={isSubmitting} color="gray" size="lg" className="mt-6" fullWidth>
                     sign in
                 </Button>
-                
+                <SellerGoogelAuth/>
                 <Typography
                     variant="small"
                     color="gray"

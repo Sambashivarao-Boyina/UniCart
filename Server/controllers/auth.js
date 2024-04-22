@@ -64,7 +64,7 @@ module.exports.refreshToken=async (req,res)=>{
     let person;
     jwt.verify(tokenFound,process.env.SECEAT_KEY,async (error,data)=>{
         if(error){
-            return ;
+            return res.json({isSuccess:false});
         }
         id=data.id;
         person=data.person;
@@ -74,16 +74,22 @@ module.exports.refreshToken=async (req,res)=>{
         if(person=="User"){
             const token=jwt.sign({id,person},process.env.SECEAT_KEY,{expiresIn:"7d"});
             const currUser=await User.findById(id);
+            if(currUser==null){
+                return res.json({isSuccess:false});
+            }
             const {password,...rest}=currUser._doc;
-            return res.status(200).json({user:rest,token});
+            return res.status(200).json({user:rest,token,isSuccess:true});
         }else if(person=="Seller"){
             const token=jwt.sign({id,person},process.env.SECEAT_KEY,{expiresIn:"7d"});
             const currSeller=await Seller.findById(id);
+            if(currSeller==null){
+                return res.json({isSuccess:false});
+            }
             const {password,...rest}=currSeller._doc;
             return res.status(200).json({user:rest,token,isSuccess:true});
         }
     }
-    return ;
+    return res.json({isSuccess:false});
 }
 
 function randomPassword(){
@@ -99,7 +105,7 @@ module.exports.userGoogleAuth=async (req,res)=>{
    
     const existingUser=await User.findOne({email:user.email});
     if(existingUser){
-        const token=jwt.sign({id:existingUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
+        const token=jwt.sign({id:existingUser._id,person:"User"},process.env.SECEAT_KEY,{expiresIn:"7d"});
         const {password,...rest}=existingUser._doc;
         return res.status(200).json({message:"User Login successfull",user:rest,token,isSuccess:true});
     }
@@ -110,7 +116,7 @@ module.exports.userGoogleAuth=async (req,res)=>{
     const createdUser=await newUser.save();
 
     const {password:newpPassword,...rest}=createdUser._doc;
-    const token=jwt.sign({id:existingUser._id},process.env.SECEAT_KEY,{expiresIn:"7d"});
+    const token=jwt.sign({id:existingUser._id,person:"User"},process.env.SECEAT_KEY,{expiresIn:"7d"});
     res.status(200).json({message:"Successfully Signup",user:rest,token,isSuccess:true});
 
 }
@@ -158,4 +164,25 @@ module.exports.sellerSignIn=async (req,res)=>{
     const token=jwt.sign({id:rest._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
    
     return res.status(200).json({seller:rest,token,message:"seller successfully login",isSuccess:true});
+}
+
+module.exports.sellerGoogleAuth=async (req,res)=>{
+    const {seller}=req.body;
+   
+    const existingSeller=await User.findOne({email:seller.email});
+    if(existingSeller){
+        const token=jwt.sign({id:existingSeller._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
+        const {password,...rest}=existingSeller._doc;
+        return res.status(200).json({message:"User Login successfull",seller:rest,token,isSuccess:true});
+    }
+    const password=randomPassword();
+    const salt=await bcrypt.genSalt(10);
+    const hashedPassword=await bcrypt.hash(password,salt);
+    const newSeller=new User({...seller,password:hashedPassword});
+    const createdSeller=await newSeller.save();
+
+    const {password:newPassword,...rest}=createdSeller._doc;
+    const token=jwt.sign({id:createdSeller._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
+    res.status(200).json({message:"Successfully Signup",seller:rest,token,isSuccess:true});
+
 }

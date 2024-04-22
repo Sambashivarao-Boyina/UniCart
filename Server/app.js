@@ -48,7 +48,7 @@ app.get("*",(req,res,next)=>{
 
 app.use((err,req,res,next)=>{
     let {status=500,message="some error"}=err;
-    res.status(status).json({status,message});
+    return res.status(status).json({status,message,isSuccess:false});
 })
 
 
