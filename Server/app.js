@@ -14,6 +14,7 @@ if(process.env!=="production"){
 //Routes
 const productRoute=require("./routes/product");
 const auth=require("./routes/auth");
+const user=require("./routes/user");
 
 async function main() {
   await mongoose.connect(process.env.DB_Url);
@@ -40,6 +41,7 @@ app.get("/",(req,res)=>{
 
 app.use("/product",productRoute);
 app.use("/auth",auth);
+app.use("/user",user);
 
 
 app.get("*",(req,res,next)=>{
@@ -48,7 +50,7 @@ app.get("*",(req,res,next)=>{
 
 app.use((err,req,res,next)=>{
     let {status=500,message="some error"}=err;
-    return res.status(status).json({status,message,isSuccess:false});
+    res.status(status).json({status,message,isSuccess:false});
 })
 
 

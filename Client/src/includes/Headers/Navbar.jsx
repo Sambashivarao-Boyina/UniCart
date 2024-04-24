@@ -40,7 +40,7 @@ export default function (){
             <div className="ml-auto flex gap-2">
                 <Link to={"/products"} className="text-white">Products</Link>
                 {
-                    currUser && <Link to={"/addproduct"} className="text-white">Add Product</Link>
+                    currUser  && currUser.type==="Seller" && <Link to={"/addproduct"} className="text-white">Add Product</Link>
                 }
                 {
                     currUser ?

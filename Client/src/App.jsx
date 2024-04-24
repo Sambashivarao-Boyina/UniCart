@@ -17,6 +17,7 @@ import { Authentication } from './Pages/Authetication/Authentication'
 import SellerSignUp from './Pages/SellerSignUp/SellerSignUp'
 import SellerSignIn from './Pages/SellerSignIn/SellerSignIn'
 import SellerRoute from './PrivateRoutes/SellerRoute'
+import {setCart} from "../src/store/userCart/userCartSlice"
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.user));
+                dispatch(setCart(data.user.cart));
             }
           
         }catch(error){

@@ -19,6 +19,19 @@ const userSchema=new Schema({
     phoneNumber:{
         type:String,
     },
+    cart:[
+        {
+            product:{
+                type:Schema.Types.ObjectId,
+                ref:"Product"
+            },
+            count:{
+                type:Number,
+                default:1,
+            }
+
+        }
+    ],
     type:{
         type:String,
         default:"User",
