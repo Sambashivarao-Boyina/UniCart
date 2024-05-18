@@ -28,7 +28,8 @@ async function initDatabase(){
     await Product.deleteMany({});
     let products=await fetchProducts();
     products=products.map(product=>{
-        const {id,...rest}=product;
+        let {id,...rest}=product;
+        rest={...rest,seller:"662a2df549c4b06b652f7102"};
         return rest;
     })
     await Product.insertMany(products);

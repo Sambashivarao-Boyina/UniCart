@@ -8,7 +8,7 @@ export default function ImagesContainer({images}){
                     key={idx}
                     src={image}
                     alt="image 1"
-                    className="h-full m-auto object-cover object-center"
+                    className="h-full  m-auto object-contain object-center"
                 />)
             }
         </Carousel>

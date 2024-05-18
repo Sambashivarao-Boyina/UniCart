@@ -1,19 +1,19 @@
-import {  useState } from "react";
+import { useDebugValue, useState } from "react";
 
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import {useFormik} from "formik";
-import sellerSchema from "./sellerSchema";
+import userSchema from "./userSchema";
 import axios from "axios";
 import {useSelector,useDispatch} from "react-redux";
-import { signInFaliure ,signInStart,signSuccess } from "../../store/user/userSlice";
+import { signInFaliure ,signInStart,signSuccess } from "../../../store/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SellerGoogelAuth from "../SellerGoogleAuth/SellerGoogleAuth";
+import UserGoogelAuth from "../UserGoogleAuth/UserGoogelAuth";
 
-export function SellerSignUp() {
+export function SignUp() {
     const [passwordShown, setPasswordShown] = useState(false);
     const togglePasswordVisiblity = () => setPasswordShown((cur) => !cur);
     const dispatch=useDispatch();
@@ -21,16 +21,15 @@ export function SellerSignUp() {
     const navigate=useNavigate();
 
     const onSubmit=async (values,actions)=>{
-        const seller=values;
+        const user=values;
         try{
-            console.log("Seller")
             dispatch(signInStart());
-            const res=await axios.post("http://localhost:8080/auth/seller-signup",{seller});
+            const res=await axios.post("http://localhost:8080/auth/user-signup",{user});
             const data=await res.data;
-           
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);
-                dispatch(signSuccess(data.seller));   
+                dispatch(signSuccess(data.user));
+                dispatch(setCart(data.user.cart));
                 navigate("/");
             }else{
                 toast.error(error.response.data.message, {
@@ -45,9 +44,10 @@ export function SellerSignUp() {
                     transition: Zoom,
                 });
                 dispatch(signInFaliure(error.response.data.message)); 
+                dispatch(signInFaliure(data.message));
             }
         }catch(error){
-            toast.error(error.response.data.message, {
+            toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -64,11 +64,11 @@ export function SellerSignUp() {
 
     const {values,errors,touched,isSubmitting,handleChange,handleBlur,handleSubmit}=useFormik({
         initialValues:{
-            sellerName:"",
-            email:"",
-            password:"",
+           username:"",
+           email:"",
+           password:"",
         },
-        validationSchema:sellerSchema,
+        validationSchema:userSchema,
         onSubmit,
     })
 
@@ -80,7 +80,7 @@ export function SellerSignUp() {
         <section className="grid text-center h-screen items-center p-8">
         <div>
             <Typography variant="h3" color="blue-gray" className="mb-2">
-            Seller Sign Up
+            User Sign Up
             </Typography>
         
             <form action="#" className="mx-auto max-w-[30rem] text-left">
@@ -110,29 +110,29 @@ export function SellerSignUp() {
                     {errors.email && touched.email  && <div className="mb-2 text-red-500 text-sm">{errors.email}</div>}
                 </div>
                 <div className="mb-6">
-                    <label htmlFor="sellername">
+                    <label htmlFor="username">
                         <Typography
                             variant="small"
                             className="mb-2 block font-medium text-gray-900"
                         >
-                            Your SellerName
+                            Your Username
                         </Typography>
                     </label>
                     <Input
-                        id="sellerName"
+                        id="username"
                         color="gray"
                         size="lg"
                         type="text"
-                        name="sellerName"
-                        placeholder="Enter sellerName"
+                        name="username"
+                        placeholder="Enter username"
                         className="w-full text-xl placeholder:opacity-100 focus:border-t-black border-t-blue-gray-200"
                         labelProps={{
                             className: "hidden",
                         }}
                         onChange={handleChange}
-                        value={values.sellerName}
+                        value={values.username}
                     />
-                    {errors.sellerName && touched.sellerName  && <div className="mb-2 text-red-500 text-sm">{errors.sellerName}</div>}
+                    {errors.username && touched.username  && <div className="mb-2 text-red-500 text-sm">{errors.username}</div>}
                 </div>
                 <div className="mb-6">
                     <label htmlFor="password">
@@ -172,14 +172,14 @@ export function SellerSignUp() {
                     sign up
                 </Button>
                 
-                <SellerGoogelAuth/>
+                <UserGoogelAuth/>
                 <Typography
                     variant="small"
                     color="gray"
                     className="mt-4 text-center font-normal"
                 >
                     Already registered?{" "}
-                    <NavLink to={"/seller-sign-in"}  className="font-medium inline text-gray-900 cursor-pointer">
+                    <NavLink to={"/sign-in"}  className="font-medium inline text-gray-900 cursor-pointer">
                         Login
                     </NavLink>
                 </Typography>
@@ -202,4 +202,4 @@ export function SellerSignUp() {
     );
 }
 
-export default SellerSignUp;
+export default SignUp;

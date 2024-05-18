@@ -8,6 +8,9 @@ const productSchema=yup.object({
     stock:yup.number("Enter Valid number").required("Stock Required").min(1),
     brand:yup.string().trim().required("Brand required"),
     category:yup.string().trim().required("Catrgory required"),
+    image1:yup.mixed().required("file required"),
+    image2:yup.mixed().required("file required"),
+    image3:yup.mixed().required("file required")
 })
 
 export default productSchema;

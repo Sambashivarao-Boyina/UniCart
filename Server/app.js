@@ -5,11 +5,10 @@ const mongoose = require('mongoose');
 const ExpressError = require("./util/ExpressError");
 const cors=require("cors");
 
+
 if(process.env!=="production"){
     dotenv.config();
 }
-
-
 
 //Routes
 const productRoute=require("./routes/product");
@@ -50,6 +49,7 @@ app.get("*",(req,res,next)=>{
 
 app.use((err,req,res,next)=>{
     let {status=500,message="some error"}=err;
+    console.log(err);
     res.status(status).json({status,message,isSuccess:false});
 })
 

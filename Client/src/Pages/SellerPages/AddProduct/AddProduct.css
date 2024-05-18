@@ -1,0 +1,9 @@
+.image-upload::-webkit-file-upload-button{
+    height: 100%;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-color: transparent;
+    border-right-color:rgb(228, 228, 228) ;
+    border-right-width: 1px;
+    color:rgb(85, 84, 84);
+}

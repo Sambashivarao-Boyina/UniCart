@@ -55,10 +55,21 @@ const productSchema=new Schema({
         {
             type:String,
         }
-    ]    
+    ],
+    seller:{
+        type:Schema.Types.ObjectId,
+        ref:"Seller",
+        required:true,
+    }    
 },{
     timestamps:true
 })
+
+productSchema.virtual("actualPrice").get(function(){
+    return this.price*(this.discountPercentage/100);
+})
+
+productSchema.set('toJSON', { virtuals: true });
 
 const Product=mongoose.model("Product",productSchema);
 

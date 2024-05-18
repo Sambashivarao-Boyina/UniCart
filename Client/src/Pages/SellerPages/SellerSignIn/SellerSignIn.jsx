@@ -5,13 +5,14 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import {useSelector,useDispatch} from "react-redux"
-import { signInFaliure ,signInStart,signSuccess } from "../../store/user/userSlice";
+import { signInFaliure ,signInStart,signSuccess } from "../../../store/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import UserGoogelAuth from "../UserGoogleAuth/UserGoogelAuth";
+import UserGoogelAuth from "../../UserPages/UserGoogleAuth/UserGoogelAuth";
 import {useFormik} from "formik";
-import signUserSchema from "./signinSchema";
+import signSellerSchema from "./signinSchema";
+import SellerGoogelAuth from "../SellerGoogleAuth/SellerGoogleAuth";
 
 export function SignIn() {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -21,16 +22,18 @@ export function SignIn() {
     const navigate=useNavigate();
 
     const onSubmit=async (values,actions)=>{
-        const user=values;
+        const seller=values;
         try{
             dispatch(signInStart());
-            const res=await axios.post("http://localhost:8080/auth/user-signin",{email:user.email,password:user.password});
+            const res=await axios.post("http://localhost:8080/auth/seller-signin",{email:seller.email,password:seller.password});
             const data=await res.data;
+           
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);
-                dispatch(signSuccess(data.user));
+                dispatch(signSuccess(data.seller));
                 navigate("/");
             }else{
+                signInFaliure(data.message);
                 toast.error(data.message, {
                     position: "top-center",
                     autoClose: 5000,
@@ -41,12 +44,10 @@ export function SignIn() {
                     progress: undefined,
                     theme: "light",
                     transition: Zoom,
-                }); 
-                dispatch(signInFaliure(data.message));
-
+                });
             }
         }catch(error){
-            toast.error(error.response.data.message, {
+            toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -67,7 +68,7 @@ export function SignIn() {
            email:"",
            password:"",
         },
-        validationSchema:signUserSchema,
+        validationSchema:signSellerSchema,
         onSubmit,
     })
 
@@ -78,7 +79,7 @@ export function SignIn() {
         <section className="grid text-center h-screen items-center p-8">
         <div>
             <Typography variant="h3" color="blue-gray" className="mb-2">
-            User Sign In
+            Seller Sign In
             </Typography>
         
             <form className="mx-auto max-w-[30rem] text-left">
@@ -144,18 +145,17 @@ export function SignIn() {
                     {errors.password && touched.password  && <div className="mb-2 text-red-500 text-sm">{errors.password}</div>}
 
                 </div>
-                <Button onClick={handleSubmit} color="gray" size="lg" className="mt-6" fullWidth>
+                <Button onClick={handleSubmit} disabled={isSubmitting} color="gray" size="lg" className="mt-6" fullWidth>
                     sign in
                 </Button>
-                
-                <UserGoogelAuth/>
+                <SellerGoogelAuth/>
                 <Typography
                     variant="small"
                     color="gray"
                     className="mt-4 text-center font-normal"
                 >
                     Not registered?{" "}
-                    <NavLink to={"/sign-up"} className="font-medium inline cursor-pointer text-gray-900">
+                    <NavLink to={"/seller-sign-up"} className="font-medium inline cursor-pointer text-gray-900">
                         Create account
                         
                     </NavLink>

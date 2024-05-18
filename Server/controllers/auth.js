@@ -26,7 +26,7 @@ module.exports.userSignUp=async (req,res)=>{
     
     const {password,...rest}=savedUser._doc;
 
-    return res.status(201).json({user:rest,token,message:"User created Successfully",isSuccess:true});
+    res.status(201).json({user:rest,token,message:"User created Successfully",isSuccess:true});
 }
 
 module.exports.accessRoute=async (req,res)=>{
@@ -50,13 +50,13 @@ module.exports.userSignIn=async (req,res)=>{
     const token=jwt.sign({id:rest._id,person:"User"},process.env.SECEAT_KEY,{expiresIn:"7d"});
    
 
-    return res.status(200).json({user:rest,token,message:"user successfully login",isSuccess:true});
+    res.status(200).json({user:rest,token,message:"user successfully login",isSuccess:true});
 }
 
 module.exports.refreshToken=async (req,res)=>{
     const headers=req.headers.authorization;
     if (!headers || !headers.startsWith('Bearer ')) {
-        return 
+        return res.status(404).json({message:"you are not authorized"});
     }
     const tokenFound=headers.split(" ")[1];
     
@@ -89,7 +89,7 @@ module.exports.refreshToken=async (req,res)=>{
             return res.status(200).json({user:rest,token,isSuccess:true});
         }
     }
-    return res.json({isSuccess:false});
+    res.json({isSuccess:false});
 }
 
 function randomPassword(){
@@ -144,7 +144,7 @@ module.exports.sellerSignUp=async (req,res)=>{
     
     const {password,...rest}=savedSeller._doc;
 
-    return res.status(201).json({seller:rest,token,message:"Seller created Successfully",isSuccess:true});
+    res.status(201).json({seller:rest,token,message:"Seller created Successfully",isSuccess:true});
 
 }
 
@@ -163,13 +163,13 @@ module.exports.sellerSignIn=async (req,res)=>{
     const {password:hashedPassword,...rest}=selerExist._doc;
     const token=jwt.sign({id:rest._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
    
-    return res.status(200).json({seller:rest,token,message:"seller successfully login",isSuccess:true});
+    res.status(200).json({seller:rest,token,message:"seller successfully login",isSuccess:true});
 }
 
 module.exports.sellerGoogleAuth=async (req,res)=>{
     const {seller}=req.body;
-   
-    const existingSeller=await User.findOne({email:seller.email});
+
+    const existingSeller=await Seller.findOne({email:seller.email});
     if(existingSeller){
         const token=jwt.sign({id:existingSeller._id,person:"Seller"},process.env.SECEAT_KEY,{expiresIn:"7d"});
         const {password,...rest}=existingSeller._doc;
@@ -178,7 +178,7 @@ module.exports.sellerGoogleAuth=async (req,res)=>{
     const password=randomPassword();
     const salt=await bcrypt.genSalt(10);
     const hashedPassword=await bcrypt.hash(password,salt);
-    const newSeller=new User({...seller,password:hashedPassword});
+    const newSeller=new Seller({...seller,password:hashedPassword});
     const createdSeller=await newSeller.save();
 
     const {password:newPassword,...rest}=createdSeller._doc;

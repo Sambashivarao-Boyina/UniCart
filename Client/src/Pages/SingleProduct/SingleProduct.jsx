@@ -10,6 +10,7 @@ import {setCart} from "../../store/userCart/userCartSlice";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 export default function SingleProduct(){
     const {productId}=useParams();
     const [product,setProduct]=useState(null);
@@ -78,7 +79,7 @@ export default function SingleProduct(){
             }
 
         }catch(error){
-            toast.error(error.response.data.message, {
+            toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -130,7 +131,7 @@ export default function SingleProduct(){
                 });
             }
         }catch(error){
-            toast.error(error.response.data.message, {
+            toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -180,11 +181,18 @@ export default function SingleProduct(){
                     <p className="">{product.description}</p>
                     <p><span className="text-4xl font-bold">${discountCalculator(product.price,product.discountPercentage)}</span><span className="line-through text-xl ml-1">${product.price}</span></p>
                     <p className="font-medium max-sm:text-xl sm:text-2xl">-{product.discountPercentage}%</p>
-                    <input type="number" placeholder="enter no of items" value={count} onChange={handleCountChange} className="p-2 border-blue-gray-700 border-2 rounded-md" name="count" />
-                    <Button onClick={addToCart} size="md" variant="gradient" color="blue" className="rounded-full w-48 mt-4 text-xl" >Add To Cart</Button>
                     {
-                        cart.findIndex(cartItem => cartItem.product===productId)!==-1 && <Button onClick={removeFromCart} size="md" variant="gradient" color="blue" className="rounded-full w-48 mt-4 text-xl" >Remove From Cart</Button>
+                        currUser===null || currUser.type=="User" ?
+                        <>
+                            <input type="number" placeholder="enter no of items" value={count} onChange={handleCountChange} className="p-2 border-blue-gray-700 border-2 rounded-md" name="count" />
+                            <Button onClick={addToCart} size="md" variant="gradient" color="blue" className="rounded-full w-48 mt-4 text-xl" >Add To Cart</Button>
+                            {
+                                cart && cart.findIndex(cartItem => cartItem.product===productId)!==-1 && <Button onClick={removeFromCart} size="md" variant="gradient" color="blue" className="rounded-full w-48 mt-4 text-xl" >Remove From Cart</Button>
+                            }
+                        </>
+                        :null
                     }
+                    
                 </div>
                 :null
             }

@@ -32,6 +32,12 @@ const userSchema=new Schema({
 
         }
     ],
+    liked:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Product",
+        }
+    ],
     type:{
         type:String,
         default:"User",

@@ -4,12 +4,22 @@ import axios from "axios"
 import {signOut} from "../../store/user/userSlice"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Avatar } from "@material-tailwind/react";
+import {
+    Avatar,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+    Badge,
+    IconButton,
+    Tooltip,
+} from "@material-tailwind/react";
+import { HomeIcon,ShoppingCartIcon } from "@heroicons/react/24/solid";
 
 export default function (){
     const {currUser}=useSelector((state)=>state.user);
+    const {cart}=useSelector((state)=>state.userCart);
     const dispatch=useDispatch();
-
     
     const handleSignOut=async ()=>{
        
@@ -37,31 +47,55 @@ export default function (){
     return (
         <nav className="sticky top-0 left-0 w-full  bg-black flex flex-row items-center justify-start px-4 py-2 z-10">
             <p  className="text-white text-2xl font-black">EcomNest</p>
-            <div className="ml-auto flex gap-2">
+            <div className="ml-auto flex gap-4 items-center">
                 <Link to={"/products"} className="text-white">Products</Link>
                 {
-                    currUser  && currUser.type==="Seller" && <Link to={"/addproduct"} className="text-white">Add Product</Link>
+                    currUser?
+                        <Link to={"/cart"}>
+                            <Badge content={cart.length}>
+                                <Tooltip content={
+                                    <p className="text-lg">&nbsp;&nbsp;Cart&nbsp;&nbsp;</p>
+                                }>
+                                    <IconButton>
+                                        <ShoppingCartIcon className="w-8  h-8"/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Badge>
+                        </Link>
+                    :null
+                }
+                {
+                    (currUser  && currUser.type==="Seller") ?
+                        <Menu >
+                            <MenuHandler>
+                                <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
+                            </MenuHandler>
+                            <MenuList className="bg-black">
+                                <MenuItem><Link to={"/sellerProfile"} className="text-white">Profile</Link></MenuItem>
+                                <MenuItem><Link to={"/addproduct"} className="text-white">Add Product</Link> </MenuItem>
+                                <MenuItem><p onClick={handleSignOut} className="text-white cursor-pointer ">Sign-Out</p></MenuItem> 
+                            </MenuList>
+                        </Menu>
+
+                    :null
                 }
                 {
                     currUser ?
-                        <p onClick={handleSignOut} className="text-white cursor-pointer ">Sign-Out</p>
+                        <Menu >
+                            <MenuHandler>
+                                <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
+                            </MenuHandler>
+                            <MenuList className="bg-black">
+                                <MenuItem><p onClick={handleSignOut} className="text-white cursor-pointer ">Sign-Out</p></MenuItem> 
+                            </MenuList>
+                        </Menu>
                         : <Link to={"/sign-in"} className="text-white">SignIn</Link>
 
                 }
+               
+
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                transition={Zoom}
-            />
+            
         </nav>
     )
 }
