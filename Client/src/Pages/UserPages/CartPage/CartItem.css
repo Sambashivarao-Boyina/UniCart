@@ -1,6 +1,6 @@
 .my-grid {
     display: grid;
-    grid-template-columns: 20% 5% auto;
+    grid-template-columns: 45% 10% auto;
     
 }
 .my-grid2 {

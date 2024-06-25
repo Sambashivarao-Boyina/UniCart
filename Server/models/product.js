@@ -66,7 +66,7 @@ const productSchema=new Schema({
 })
 
 productSchema.virtual("actualPrice").get(function(){
-    return this.price*(this.discountPercentage/100);
+    return this.price-this.price*(this.discountPercentage/100);
 })
 
 productSchema.set('toJSON', { virtuals: true });

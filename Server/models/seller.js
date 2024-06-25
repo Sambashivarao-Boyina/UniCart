@@ -26,6 +26,12 @@ const sellerSchema=new Schema({
         type:String,
         default:"Seller",
     },
+    orders:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Order"
+        }
+    ]
 },{
     timestamps:true
 })

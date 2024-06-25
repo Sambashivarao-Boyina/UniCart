@@ -50,7 +50,7 @@ export default function (){
             <div className="ml-auto flex gap-4 items-center">
                 <Link to={"/products"} className="text-white">Products</Link>
                 {
-                    currUser?
+                    currUser && currUser.type==="User"?
                         <Link to={"/cart"}>
                             <Badge content={cart.length}>
                                 <Tooltip content={
@@ -70,27 +70,31 @@ export default function (){
                             <MenuHandler>
                                 <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
                             </MenuHandler>
-                            <MenuList className="bg-black">
-                                <MenuItem><Link to={"/sellerProfile"} className="text-white">Profile</Link></MenuItem>
-                                <MenuItem><Link to={"/addproduct"} className="text-white">Add Product</Link> </MenuItem>
-                                <MenuItem><p onClick={handleSignOut} className="text-white cursor-pointer ">Sign-Out</p></MenuItem> 
+                            <MenuList >
+                                <MenuItem><Link to={"/sellerProfile"} >Profile</Link></MenuItem>
+                                <MenuItem><Link to={"/addproduct"} >Add Product</Link> </MenuItem>
+                                <MenuItem><Link to={"/seller/orders"} >Orders</Link> </MenuItem>
+                                <MenuItem><p onClick={handleSignOut} className=" cursor-pointer ">Sign-Out</p></MenuItem> 
                             </MenuList>
                         </Menu>
 
                     :null
                 }
                 {
-                    currUser ?
+                    currUser && currUser.type==="User"?
                         <Menu >
                             <MenuHandler>
                                 <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
                             </MenuHandler>
-                            <MenuList className="bg-black">
-                                <MenuItem><p onClick={handleSignOut} className="text-white cursor-pointer ">Sign-Out</p></MenuItem> 
+                            <MenuList>
+                                <MenuItem><p onClick={handleSignOut} className=" cursor-pointer ">Sign-Out</p></MenuItem> 
                             </MenuList>
                         </Menu>
-                        : <Link to={"/sign-in"} className="text-white">SignIn</Link>
+                        :null
 
+                }
+                {
+                    currUser==null &&  <Link to={"/sign-in"} className="text-white">SignIn</Link>
                 }
                
 

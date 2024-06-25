@@ -20,6 +20,7 @@ import SellerRoute from './PrivateRoutes/SellerRoute'
 import {setCart} from "../src/store/userCart/userCartSlice"
 import SellerProfilePage from './Pages/SellerPages/SellerProfilePage/SellerProfilePage'
 import Cart from './Pages/UserPages/CartPage/Cart'
+import SellerOrders from './Pages/SellerPages/SellerOrders/SellerOrders'
 
 
 function App() {
@@ -64,12 +65,16 @@ function App() {
                 <Route element={<SellerRoute/>}>
                     <Route exact path="/sellerProfile" element={<SellerProfilePage/>}/>
                 </Route>
+                <Route element={<SellerRoute/>}>
+                    <Route exact path="/seller/orders" element={<SellerOrders/>}/>
+                </Route>
         
                 <Route exact path="/sign-up" element={<SignUp/>}/>
                 <Route exact path="/sign-in" element={<SignIn/>}/>
                 <Route exact path="/seller-sign-up" element={<SellerSignUp/>}/>
                 <Route exact path="/seller-sign-in" element={<SellerSignIn/>}/>
                 <Route exact path="/authentication" element={<Authentication/>}/>
+
             </Routes>
             
         </>

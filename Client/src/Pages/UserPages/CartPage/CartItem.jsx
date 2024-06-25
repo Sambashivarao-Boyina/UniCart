@@ -19,6 +19,7 @@ import {
     setCart
 } from "../../../store/userCart/userCartSlice"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
+import ItemCartCount from "./ItemCartCount";
 
 
 export default function CartItem({item}) {
@@ -32,10 +33,6 @@ export default function CartItem({item}) {
     const handleChangeCountOfCartOpen = () => setChangeCountOfCartOpen(!changeCoutOfCartOpen);
 
     const [cartCount,setCartCount]=useState(item.count);
-
-    const handleCartCountChange = (event)=>{
-        setCartCount(event.target.value);
-    }
 
 
     const dispatch=useDispatch();
@@ -151,8 +148,8 @@ export default function CartItem({item}) {
     
 
     return (
-        <div className="p-4 gap-4 border-2 border-black text-lg text-black w-full my-4 rounded-lg flex items-center justify-start flex-wrap relative">
-            <div className="w-full flex flex-row-reverse mb-[-60px] z-0">
+        <div className="p-4 gap-4 border-2 border-black text-lg text-black w-full lg:w-[47%] my-4 rounded-lg flex flex-col items-center  flex-wrap relative">
+            <div className="w-full  flex flex-row-reverse mb-[-3    0px] z-0">
                 <Menu >
                     <MenuHandler>
                         <Bars3Icon className="w-7 h-7 border-black border-[1px] rounded-md" />
@@ -199,7 +196,8 @@ export default function CartItem({item}) {
                         </ul>
                         <p className="bold">New Quantity:</p>
                         <div className="w-72 mt-4">
-                            <Input type="number" label="Cart Count" value={cartCount} onChange={handleCartCountChange} />
+                            <ItemCartCount cartCount={cartCount} setCartCount={setCartCount}/>
+                            {/* <Input type="number" label="Cart Count" value={cartCount} onChange={handleCartCountChange} min={1}/> */}
                         </div>
                         
                         </DialogBody>
@@ -218,21 +216,26 @@ export default function CartItem({item}) {
                     </DialogFooter>
                 </Dialog>
             </div>
-            <div className="h-[200px] w-[250px] ">
-                <img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" />
-            </div>
-            <div className="h-full flex flex-col">
-                <div className="my-grid w-[425px] truncate" >
-                    <b>Name </b><b className="w-2">:</b><p > {item.product.title}</p>
-                    <b>Price </b><b>:</b><p> ${item.product.price}</p>
-                    <b>Discount </b><b>:</b><p> {item.product.discountPercentage}%</p>
-                    <b>FinalPrice </b><b>:</b><p> ${item.product.actualPrice}</p>
+            <div className=" w-full flex flex-row items-center justify-evenly gap-4 flex-wrap">
+                <div className="h-[200px] w-[250px] ">
+                    <img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" />
                 </div>
-            </div>
+                <div className="h-full flex flex-col ">
+                    <div className="my-grid  text-sm w-[200px] sm:text-lg sm:w-[375px]  truncate" >
+                        <b>Name </b><b >:</b><p > {item.product.title}</p>
+                        <b>Price </b><b>:</b><p> ${(item.product.price).toFixed(2)}</p>
+                        <b>Discount </b><b>:</b><p> {item.product.discountPercentage}%</p>
+                        <b>FinalPrice </b><b>:</b><p> ${(item.product.actualPrice).toFixed(2)}</p>
+                    </div>
+                </div>
             
-            <div className="my-grid2 w-[375px] self-end">
-                <b>No of Items </b><b>:</b><p> {item.count}</p>
-                <b>Total Price </b><b>:</b><p className="truncate"> ${(item.count*item.product.actualPrice).toFixed(2)}</p>
+            </div>
+            <div className="w-full self-end">
+                <hr className="border-t-2 mb-3 border-blue-gray-300" />
+                <div className="my-grid2 w-[375px]">
+                    <b>No of Items </b><b>:</b><p> {item.count}</p>
+                    <b>Total Price </b><b>:</b><p className="truncate"> ${(item.count*item.product.actualPrice).toFixed(2)}</p>
+                </div>
             </div>
          
         

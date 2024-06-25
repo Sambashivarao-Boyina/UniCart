@@ -4,13 +4,26 @@ import axios from "axios";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CartItem from "./CartItem"
-import { Button } from '@material-tailwind/react';
 import {useSelector} from "react-redux";
+import {
+    Button,
+    Dialog,
+    DialogHeader,
+    DialogBody,
+    DialogFooter,
+    Input,
+    Textarea
+} from "@material-tailwind/react";
+import PlaceOrderDialog from './PlaceOrderDialog';
 
 export default function Cart() {
 
     const [cartItems,setCartItems]=useState([]);
     const {cart}=useSelector((state)=>state.userCart);
+
+    //Place Order Confirm
+    const [orderDialog, setOrderDialog] = React.useState(false);
+    const handleOrderDialog = () => setOrderDialog(!orderDialog);
 
     useEffect(()=>{
         getCartItems();
@@ -56,7 +69,7 @@ export default function Cart() {
         }
     }
 
-    
+
 
     const totalNoOfItems=()=>{
         let count=0;
@@ -77,8 +90,8 @@ export default function Cart() {
     return (
         <>
             <div className='flex flex-col items-center px-16 max-md:px-8 max-sm:p-4: py-6 w-full '>
-                <p className="text-4xl font-bold">Your Cart Items</p>
-                <div className="w-full">
+                <p className="text-3xl sm:text-4xl font-bold">Your Cart Items</p>
+                <div className="w-full flex flex-row items-center justify-start flex-wrap gap-4 mx-auto">
                     {
                         cartItems && cartItems.length ?
                             cartItems.map((item,idx)=>
@@ -87,22 +100,27 @@ export default function Cart() {
                         :null
                     }
                 </div>
-                <div className='w-full flex items-center justify-between px-6'>
+                <br />
+                <hr className="border-t-2 w-full mb-3 border-blue-gray-500" />
+                <br />
+                <div className='w-full flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:text-3xl text-xl flex-wrap justify-between  px-1 sm:px-6'>
+                    
                     <div>
                         <div>
-                            <span className="text-3xl font-bold">Total No of Items: </span>
-                            <span className="text-3xl">{totalNoOfItems()}</span>
+                            <span className=" font-bold">Total No of Items: </span>
+                            <span className="">{totalNoOfItems()}</span>
                         </div>
                         <div>
-                            <span className="text-3xl font-bold">Cost of total Items: </span>
-                            <span className="text-3xl">${totalCostOfItems()}</span>
+                            <span className=" font-bold">Cost of total Items: </span>
+                            <span className="">${totalCostOfItems()}</span>
                         </div>
                     </div>
                     <div>
-                        <Button className='text-2xl'>Place Order</Button>
+                        <Button onClick={handleOrderDialog} className='sm:text-2xl'>Place Order</Button>
                     </div>
                 </div>
             </div>
+            <PlaceOrderDialog orderDialog={orderDialog} handleOrderDialog={handleOrderDialog} totalCostOfItems={totalCostOfItems()}/>
             <ToastContainer
                 position="top-center"
                 autoClose={5000}

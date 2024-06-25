@@ -41,7 +41,15 @@ const userSchema=new Schema({
     type:{
         type:String,
         default:"User",
-    }
+    },
+    orders:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Order"
+        }
+    ]
+
+
 
 },{
     timestamps:true,

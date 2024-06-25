@@ -74,6 +74,10 @@ module.exports.changeCartCount =async (req,res,next)=>{
         next(new ExpressError(404,"User Not found"));
     }
 
+    if(req.body.count<0){
+        req.body.count=1;
+    }
+
     let idx=user.cart.findIndex((item)=>item.product.equals(productId));
     req.body.count=req.body.count===0 || req.body.count== null ? 1 : req.body.count
     user.cart[idx].count=req.body.count;
@@ -81,4 +85,10 @@ module.exports.changeCartCount =async (req,res,next)=>{
     const updateUser=await user.save();
 
     res.status(202).json({message:"Count Changed",cart:updateUser.cart,isSuccess:true});
+}
+
+module.exports.getOrders=async (req,res)=>{
+    const user=await User.findById(req.user.id).populate("orders");
+
+    res.json({isSuccess:true,orders:user.orders});
 }

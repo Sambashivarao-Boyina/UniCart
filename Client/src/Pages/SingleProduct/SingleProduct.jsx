@@ -9,6 +9,8 @@ import {useSelector,useDispatch} from "react-redux";
 import {setCart} from "../../store/userCart/userCartSlice";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ItemCartCount from "../UserPages/CartPage/ItemCartCount"
+
 
 
 export default function SingleProduct(){
@@ -21,6 +23,8 @@ export default function SingleProduct(){
     const {cart}=useSelector((state)=>state.userCart);
     const [isContainInCart,setIsContainInCart]=useState(false);
     const dispatch=useDispatch();
+
+
 
     useEffect(()=>{
         getProduct();
@@ -184,7 +188,9 @@ export default function SingleProduct(){
                     {
                         currUser===null || currUser.type=="User" ?
                         <>
-                            <input type="number" placeholder="enter no of items" value={count} onChange={handleCountChange} className="p-2 border-blue-gray-700 border-2 rounded-md" name="count" />
+
+                            <ItemCartCount cartCount={count} setCartCount={setCount}/>
+                            {/* <input type="number" placeholder="enter no of items" value={count} onChange={handleCountChange} className="p-2 border-blue-gray-700 border-2 rounded-md" name="count" /> */}
                             <Button onClick={addToCart} size="md" variant="gradient" color="blue" className="rounded-full w-48 mt-4 text-xl" >Add To Cart</Button>
                             {
                                 cart && cart.findIndex(cartItem => cartItem.product===productId)!==-1 && <Button onClick={removeFromCart} size="md" variant="gradient" color="blue" className="rounded-full w-48 mt-4 text-xl" >Remove From Cart</Button>
