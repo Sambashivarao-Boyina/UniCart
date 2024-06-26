@@ -5,6 +5,7 @@ const { verifyUser, isUser } = require("../middleware");
 const router=express.Router();
 
 
-router.post("/",verifyUser,isUser,wrapAsync(placeOrder))
+router.post("/",verifyUser,isUser,wrapAsync(placeOrder));
+
 
 module.exports=router;

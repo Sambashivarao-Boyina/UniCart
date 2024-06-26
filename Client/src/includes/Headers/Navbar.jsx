@@ -71,9 +71,9 @@ export default function (){
                                 <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
                             </MenuHandler>
                             <MenuList >
-                                <MenuItem><Link to={"/sellerProfile"} >Profile</Link></MenuItem>
-                                <MenuItem><Link to={"/addproduct"} >Add Product</Link> </MenuItem>
-                                <MenuItem><Link to={"/seller/orders"} >Orders</Link> </MenuItem>
+                                <Link to={"/sellerProfile"} ><MenuItem>Profile</MenuItem></Link>
+                                <Link to={"/addproduct"} ><MenuItem>Add Product</MenuItem></Link> 
+                                <Link to={"/seller/orders"} ><MenuItem>Orders </MenuItem></Link>
                                 <MenuItem><p onClick={handleSignOut} className=" cursor-pointer ">Sign-Out</p></MenuItem> 
                             </MenuList>
                         </Menu>

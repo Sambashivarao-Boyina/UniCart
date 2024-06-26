@@ -60,7 +60,7 @@ const orderSchema=new Schema({
     address:addressSchema,
     orderStatus:{
         type:String,
-        enum:["OrderPlaced","Packed","Deliverd"],
+        enum:["OrderPlaced","Packed","Deliverd","Canceled"],
         default:"OrderPlaced"
     },
     orderedDate:{

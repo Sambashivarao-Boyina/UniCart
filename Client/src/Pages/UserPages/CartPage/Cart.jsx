@@ -116,11 +116,11 @@ export default function Cart() {
                         </div>
                     </div>
                     <div>
-                        <Button onClick={handleOrderDialog} className='sm:text-2xl'>Place Order</Button>
+                        <Button onClick={handleOrderDialog} disabled={cart.length===0} className='sm:text-2xl'>Place Order</Button>
                     </div>
                 </div>
             </div>
-            <PlaceOrderDialog orderDialog={orderDialog} handleOrderDialog={handleOrderDialog} totalCostOfItems={totalCostOfItems()}/>
+            <PlaceOrderDialog  orderDialog={orderDialog} handleOrderDialog={handleOrderDialog} totalCostOfItems={totalCostOfItems()}/>
             <ToastContainer
                 position="top-center"
                 autoClose={5000}
