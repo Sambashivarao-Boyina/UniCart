@@ -20,6 +20,7 @@ import {
 } from "../../../store/userCart/userCartSlice"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import ItemCartCount from "./ItemCartCount";
+import {Link} from "react-router-dom";
 
 
 export default function CartItem({item}) {
@@ -218,7 +219,7 @@ export default function CartItem({item}) {
             </div>
             <div className=" w-full flex flex-row items-center justify-evenly gap-4 flex-wrap">
                 <div className="h-[200px] w-[250px] ">
-                    <img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" />
+                    <Link to={`/singleProduct/${item.product._id}`}><img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" /></Link>
                 </div>
                 <div className="h-full flex flex-col ">
                     <div className="my-grid  text-sm w-[200px] sm:text-lg sm:w-[375px]  truncate" >

@@ -49,10 +49,10 @@ export default function Products(){
 
     return (
         <>
-            <div className="p-4 flex flex-row  items-center  flex-wrap justify-evenly ">
+            <div className="w-screen py-4 px-auto flex flex-row  items-center  flex-wrap justify-evenly ">
                 {
                     products && products.length ?
-                    products.map((item)=><Link to={`/singleProduct/${item._id}` } key={item._id} ><Product product={item}/></Link>)
+                    products.map((item)=><div key={item._id} ><Product product={item}/></div>)
                     :null
                 }
             </div>

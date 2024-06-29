@@ -88,6 +88,7 @@ export default function (){
                             </MenuHandler>
                             <MenuList>
                                 <Link to={"/user/orders"} ><MenuItem>Orders </MenuItem></Link>
+                                <Link to={"/user/wishlist"}><MenuItem>WishList</MenuItem></Link>
                                 <MenuItem><p onClick={handleSignOut} className=" cursor-pointer ">Sign-Out</p></MenuItem> 
                             </MenuList>
                         </Menu>

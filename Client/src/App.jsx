@@ -23,6 +23,7 @@ import Cart from './Pages/UserPages/CartPage/Cart'
 import SellerOrders from './Pages/SellerPages/SellerOrders/SellerOrders'
 import UserRoute from './PrivateRoutes/UserRoute'
 import UserOrders from './Pages/UserPages/UserOrdersPage/UserOrders'
+import WishList from './Pages/UserPages/WishList/WishList'
 
 
 function App() {
@@ -65,6 +66,9 @@ function App() {
                 <Route element={<UserRoute/>}>
                     <Route exact path='/user/orders' element={<UserOrders/>}/>
                 </Route>
+                <Route element={<UserRoute/>}>
+                    <Route exact path='/user/wishlist' element={<WishList/>}/>
+                </Route>
                 <Route element={<SellerRoute/>}>
                     <Route exact path="/addproduct" element={<AddProduct/>}/>
                 </Route>
@@ -74,7 +78,8 @@ function App() {
                 <Route element={<SellerRoute/>}>
                     <Route exact path="/seller/orders" element={<SellerOrders/>}/>
                 </Route>
-        
+
+            
                 <Route exact path="/sign-up" element={<SignUp/>}/>
                 <Route exact path="/sign-in" element={<SignIn/>}/>
                 <Route exact path="/seller/sign-up" element={<SellerSignUp/>}/>

@@ -4,6 +4,7 @@ import DataTable from "react-data-table-component";
 import OrdersTable from './OrdersTable';
 import TableRowMenu from './TableRowMenu';
 import AddressDialog from './AddressDialog';
+import { Link } from 'react-router-dom';
 
 
 
@@ -44,7 +45,7 @@ export default function UserOrders() {
         {   
             name: 'Thumbnail',
 		    grow: 0,
-		    cell: row => <img height="84px" width="56px" alt={row.name} src={row.product.thumbnail} />,
+		    cell: row => <Link to={`/singleProduct/${row.product._id}`}><img height="84px" width="56px" alt={row.name} src={row.product.thumbnail} />,</Link>,
         },
         {
             name:"Product",

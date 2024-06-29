@@ -187,7 +187,7 @@ export default function Review({review,setReviews}) {
                     <div className="mb-4 -mt-3">
                     <RatingBox rating={rating} setRating={setRating} hover={hover} setHover={setHover}/>
                     </div>
-                    <Textarea  label="Your Comment" rows={8} value={comment} onChange={(event)=>setComment(event.target.value)} maxLength={200}/>
+                    <Textarea  label="Your Comment" rows={4} value={comment} onChange={(event)=>setComment(event.target.value)} maxLength={200}/>
 
                 </DialogBody>
                 <DialogFooter>

@@ -114,3 +114,51 @@ module.exports.cancelOrder=async (req,res)=>{
 
     res.status(200).json({isSuccess:true,user});
 }
+
+
+module.exports.addToWishList = async (req,res,next)=>{
+    const {id}=req.params;
+    const product=await Product.findById(id);
+    if(product==null){
+        next(new ExpressError(400,"product not found"));
+    }
+
+    let user=await User.findById(req.user.id);
+
+    if(user===null){
+        next(new ExpressError(400,"user not found"));
+    }
+    if(user.wishlist!==null){
+        user.wishlist.push(id);
+        user=await user.save();
+
+    }else{
+         user = await User.findByIdUpdate(req.user.id,{wishlist:[id]});
+    }
+    res.status(200).json({isSuccess:true,message:"Added to wishlist",user});
+
+    
+}
+
+module.exports.removeFromWishList = async (req,res,next)=>{
+    const {id}=req.params;
+    
+    const product=await Product.findById(id);
+    if(product==null){
+        next(new ExpressError(400,"product not found"));
+    }
+
+    let user=await User.findById(req.user.id);
+
+    if(user===null){
+        next(new ExpressError(400,"user not found"));
+    }
+    if(user.wishlist && user.wishlist.length>0){
+        user.wishlist=user.wishlist.filter((item)=>!item.equals(id));
+        await user.save();
+        user=await User.findById(req.user.id);
+    }
+    res.status(200).json({isSuccess:true,message:"Removed to wishlist",user});
+
+    
+}

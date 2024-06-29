@@ -16,6 +16,9 @@ import { IconButton, Typography } from "@material-tailwind/react";
 import { useCopyToClipboard } from "usehooks-ts";
 import { CheckIcon, DocumentDuplicateIcon,ShareIcon } from "@heroicons/react/24/outline";
 import { useLocation } from "react-router-dom";
+import Rating from '@mui/material/Rating';
+import WishListIcon from "../UserPages/WishList/WishListIcon";
+
 
 
 
@@ -165,7 +168,6 @@ export default function SingleProduct(){
         try{
             const res=await axios.get(`http://localhost:8080/product/${productId}`);
             const data=await res.data;
-            console.log(data);
             setProduct(data.product);
             setLoading(false);
         }catch(err){
@@ -202,6 +204,10 @@ export default function SingleProduct(){
                         <p className="max-w-xl">{product.returnPolicy}</p>
                         <p><span className="text-4xl font-bold">${discountCalculator(product.price,product.discountPercentage)}</span><span className="line-through text-xl ml-1">${product.price}</span></p>
                         <p className="font-medium max-sm:text-xl sm:text-2xl">-{product.discountPercentage}%</p>
+
+                        {
+                            product.reviews && product.reviews.length>0 && <p className="flex items-center"><Rating name="read-only" value={product.averageRating} precision={0.5} readOnly /> <span className="ml-2">over {product.reviews.length} ratings</span> </p>
+                        }
                         {
                             currUser===null || currUser.type=="User" ?
                             <>
@@ -210,8 +216,8 @@ export default function SingleProduct(){
                                 {/* <input type="number" placeholder="enter no of items" value={count} onChange={handleCountChange} className="p-2 border-blue-gray-700 border-2 rounded-md" name="count" /> */}
                                 <div className="flex flex-row items-center ">
                                     <Button onClick={addToCart} size="md" variant="gradient" color="blue" className=" w-48 mt-4 text-xl" >Add To Cart</Button>
-
-                                    <div className="flex items-center mt-4 ml-16 gap-x-4 ">
+                                    <div className="ml-4"><WishListIcon productId={productId}/></div>
+                                    <div className="flex items-center mt-4 ml-4 gap-x-4 ">
                                         <IconButton
                                             color="blue"
                                             size="lg"
