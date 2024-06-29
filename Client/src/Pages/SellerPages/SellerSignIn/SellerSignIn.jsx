@@ -155,7 +155,7 @@ export function SignIn() {
                     className="mt-4 text-center font-normal"
                 >
                     Not registered?{" "}
-                    <NavLink to={"/seller-sign-up"} className="font-medium inline cursor-pointer text-gray-900">
+                    <NavLink to={"/seller/sign-up"} className="font-medium inline cursor-pointer text-gray-900">
                         Create account
                         
                     </NavLink>

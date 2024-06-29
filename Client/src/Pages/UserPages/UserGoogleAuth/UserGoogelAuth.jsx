@@ -39,7 +39,7 @@ export default function UserGoogelAuth() {
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.user));
                 dispatch(setCart(data.user.cart));
-                navigate("/");
+                navigate("/products");
             }else{
                 toast.error(error?.response?.data?.message, {
                     position: "top-center",

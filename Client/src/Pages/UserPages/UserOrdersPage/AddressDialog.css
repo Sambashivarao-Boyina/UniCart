@@ -1,0 +1,10 @@
+.my-grid {
+    display: grid;
+    grid-template-columns: 45% 10% auto;
+    
+}
+.my-grid2 {
+    display: grid;
+    grid-template-columns: 25% 5% auto;
+    
+}

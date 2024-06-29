@@ -10,16 +10,14 @@ module.exports.getAllProducts=async (req,res)=>{
 
 module.exports.getSingleProduct=async (req,res)=>{
     const {productID}=req.params;
-    const product=await Product.findById(productID);
+    const product=await Product.findById(productID).populate("reviews");
     res.status(200).json({product,isSuccess:true});
 }
 
 module.exports.addNewProduct=async (req,res)=>{
     const {product}=req.body;
-    
-    const newProduct=new Product(product);
+    const newProduct=new Product({...product,reviews:[]});
     const seller=await Seller.findById(req.user.id);
-    
     newProduct.seller=req.user.id;
 
     try{

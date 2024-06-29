@@ -31,7 +31,7 @@ export function SignIn() {
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.user));
                 dispatch(setCart(data.user.cart));
-                navigate("/");
+                navigate("/products");
             }else{
                 toast.error(data.message, {
                     position: "top-center",

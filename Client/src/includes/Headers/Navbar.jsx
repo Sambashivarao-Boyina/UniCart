@@ -46,13 +46,13 @@ export default function (){
 
     return (
         <nav className="sticky top-0 left-0 w-full  bg-black flex flex-row items-center justify-start px-4 py-2 z-10">
-            <p  className="text-white text-2xl font-black">EcomNest</p>
+            <Link className="text-white text-2xl font-black" to={"/products"}>EcomNest</Link>
+
             <div className="ml-auto flex gap-4 items-center">
-                <Link to={"/products"} className="text-white">Products</Link>
                 {
                     currUser && currUser.type==="User"?
                         <Link to={"/cart"}>
-                            <Badge content={cart.length}>
+                            <Badge content={cart && cart.length}>
                                 <Tooltip content={
                                     <p className="text-lg">&nbsp;&nbsp;Cart&nbsp;&nbsp;</p>
                                 }>
@@ -87,6 +87,7 @@ export default function (){
                                 <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
                             </MenuHandler>
                             <MenuList>
+                                <Link to={"/user/orders"} ><MenuItem>Orders </MenuItem></Link>
                                 <MenuItem><p onClick={handleSignOut} className=" cursor-pointer ">Sign-Out</p></MenuItem> 
                             </MenuList>
                         </Menu>

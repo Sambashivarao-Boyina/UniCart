@@ -28,11 +28,23 @@ async function initDatabase(){
     await Product.deleteMany({});
     let products=await fetchProducts();
     products=products.map(product=>{
-        let {id,...rest}=product;
-        rest={...rest,seller:"662a2df549c4b06b652f7102"};
+        let {id,dimensions,shippingInformation,availabilityStatus,reviews,minimumOrderQuantity,meta,...rest}=product;
+        rest={...rest,seller:"667e9930912c53cd6489c5a6"};
         return rest;
     })
-    await Product.insertMany(products);
+    let count=0;
+    for(let i=0;i<products.length;i++){
+        try{
+            const product=new Product({...products[i],reviews:[]});
+            
+            await product.save();
+            count++;
+        }catch(err){
+            console.log(err);
+        }
+    }
+    console.log(count);
+    // await Product.insertMany(products);
 }
 
 initDatabase()

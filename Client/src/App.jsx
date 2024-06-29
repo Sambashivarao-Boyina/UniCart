@@ -21,6 +21,8 @@ import {setCart} from "../src/store/userCart/userCartSlice"
 import SellerProfilePage from './Pages/SellerPages/SellerProfilePage/SellerProfilePage'
 import Cart from './Pages/UserPages/CartPage/Cart'
 import SellerOrders from './Pages/SellerPages/SellerOrders/SellerOrders'
+import UserRoute from './PrivateRoutes/UserRoute'
+import UserOrders from './Pages/UserPages/UserOrdersPage/UserOrders'
 
 
 function App() {
@@ -56,8 +58,12 @@ function App() {
                 <Route exact path="/" element={<Products/>}/>
                 <Route exact path="/products" element={<Products/>}/>
                 <Route exact path="/singleProduct/:productId" element={<SingleProduct/>}/>
+
                 <Route element={<SignInRoute/>}>
                     <Route exact path='/cart' element={<Cart/>}/>
+                </Route>
+                <Route element={<UserRoute/>}>
+                    <Route exact path='/user/orders' element={<UserOrders/>}/>
                 </Route>
                 <Route element={<SellerRoute/>}>
                     <Route exact path="/addproduct" element={<AddProduct/>}/>
@@ -71,9 +77,10 @@ function App() {
         
                 <Route exact path="/sign-up" element={<SignUp/>}/>
                 <Route exact path="/sign-in" element={<SignIn/>}/>
-                <Route exact path="/seller-sign-up" element={<SellerSignUp/>}/>
-                <Route exact path="/seller-sign-in" element={<SellerSignIn/>}/>
+                <Route exact path="/seller/sign-up" element={<SellerSignUp/>}/>
+                <Route exact path="/seller/sign-in" element={<SellerSignIn/>}/>
                 <Route exact path="/authentication" element={<Authentication/>}/>
+
 
             </Routes>
             

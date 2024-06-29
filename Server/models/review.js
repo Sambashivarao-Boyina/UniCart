@@ -9,6 +9,14 @@ const reviewSchema=new Schema({
     comment:{
         type:String,
         requried:true,
+    },
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:"User",
+    },
+    product:{
+        type:Schema.Types.ObjectId,
+        ref:"Product",
     }
 })
 

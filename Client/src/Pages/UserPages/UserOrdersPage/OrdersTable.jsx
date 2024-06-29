@@ -1,8 +1,6 @@
-import React,{useEffect, useState} from 'react'
+import React from 'react'
 import DataTable from 'react-data-table-component'
 import styled, { keyframes } from 'styled-components';
-
-
 
 
 const rotate360 = keyframes`
@@ -33,9 +31,8 @@ const coustomStyles={
 	headCells:{
 		style:{
 			fontSize:"1rem",
-			color:"white",
-			fontWeight:"500",
-			backgroundColor:"blue"
+			color:"blue",
+			fontWeight:"500"
 		},
 	},
 	cells:{
@@ -53,19 +50,19 @@ const CustomLoader = () => (
 );
 
 export default function OrdersTable({columns,data,pending}) {
-	
     return (
-
-		<DataTable
-			className="w-[800px]"
-			columns={columns}
-			data={data}
-			progressPending={pending}
-			progressComponent={<CustomLoader />}
-			fixedHeader={true}
-			customStyles={coustomStyles}
-			pagination
-		/> 
-        
+        <div className='mx-auto p-4  mt-4 lg:w-10/12'>
+			<h1 className="p-2 text-xl md:text-3xl font-bold">Order's Details:</h1>
+			<DataTable
+				className="w-[800px]"
+				columns={columns}
+				data={data}
+				progressPending={pending}
+				progressComponent={<CustomLoader />}
+				fixedHeader={true}
+				customStyles={coustomStyles}
+				pagination
+			/> 
+		</div>
     )
 }

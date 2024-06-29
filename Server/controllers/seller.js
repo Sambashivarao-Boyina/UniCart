@@ -26,3 +26,15 @@ module.exports.updateOrder=async (req,res)=>{
     res.status(200).json({isSuccess:true,seller});
 }
 
+
+module.exports.deleteCanceledOrders = async (req,res)=>{
+    const seller=await Seller.findById(req.user.id).populate("orders");
+    seller.orders=seller.orders.filter((order)=>order.orderStatus!=="Canceled");
+    await seller.save();
+    let savedSeller=await Seller.findById(req.user.id).populate("orders").populate({
+        path:"orders",
+        populate:"product"
+    })
+
+    res.status(200).json({message:"Canceled Orders Deleted",orders:savedSeller.orders});
+}

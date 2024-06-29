@@ -1,6 +1,7 @@
 const User=require("../models/user");
 const Product=require("../models/product");
 const ExpressError=require("../util/ExpressError")
+const Order=require("../models/order");
 
 module.exports.addToCart=async (req,res)=>{
     const {item}=req.body;
@@ -87,8 +88,29 @@ module.exports.changeCartCount =async (req,res,next)=>{
     res.status(202).json({message:"Count Changed",cart:updateUser.cart,isSuccess:true});
 }
 
-module.exports.getOrders=async (req,res)=>{
-    const user=await User.findById(req.user.id).populate("orders");
 
-    res.json({isSuccess:true,orders:user.orders});
+
+
+module.exports.getOrders=async (req,res)=>{
+    const user=await User.findById(req.user.id).populate("orders").populate({
+        path:"orders",
+        populate:"product"
+    })
+
+    res.status(200).json({isSuccess:true,user});
+}
+
+
+module.exports.cancelOrder=async (req,res)=>{
+    const {id}=req.params;
+    const order=await Order.findById(id);
+    order.orderStatus="Canceled";
+    await order.save();
+
+    const user=await User.findById(req.user.id).populate("orders").populate({
+        path:"orders",
+        populate:"product"
+    })
+
+    res.status(200).json({isSuccess:true,user});
 }

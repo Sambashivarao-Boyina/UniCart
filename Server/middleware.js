@@ -39,7 +39,9 @@ module.exports.isSeller=(req,res,next)=>{
 
 module.exports.isUser=(req,res,next)=>{
     if(req.user!==null && req.user.type!=="User"){
-        return res.status(401).json({message:"You are not a Buyer",isSuccess:false});
+        res.status(401).json({message:"You are not a Buyer",isSuccess:false});
+    }else{
+        next();
     }
-    next();
+    
 }

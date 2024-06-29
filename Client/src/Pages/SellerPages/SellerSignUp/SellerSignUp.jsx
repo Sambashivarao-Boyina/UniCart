@@ -179,7 +179,7 @@ export function SellerSignUp() {
                     className="mt-4 text-center font-normal"
                 >
                     Already registered?{" "}
-                    <NavLink to={"/seller-sign-in"}  className="font-medium inline text-gray-900 cursor-pointer">
+                    <NavLink to={"/seller/sign-in"}  className="font-medium inline text-gray-900 cursor-pointer">
                         Login
                     </NavLink>
                 </Typography>
