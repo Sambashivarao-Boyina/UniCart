@@ -7,9 +7,12 @@ const { verifyUser, isSeller } = require("../middleware");
 
 router.get("/allProducts",wrapAsync(productController.getAllProducts));
 
-router.get("/:productID",wrapAsync(productController.getSingleProduct));
+router
+    .get("/:productID",wrapAsync(productController.getSingleProduct))
+    .put("/:productID",verifyUser,isSeller,wrapAsync(productController.updateProduct));
 
-router.post("/newproduct",verifyUser,isSeller,wrapAsync(productController.addNewProduct));
+
+router.post("/",verifyUser,isSeller,wrapAsync(productController.addNewProduct));
 
 router.delete("/deleteProduct/:productId",verifyUser,isSeller,wrapAsync(productController.deleteProduct));
 

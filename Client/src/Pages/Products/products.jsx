@@ -49,7 +49,7 @@ export default function Products(){
 
     return (
         <>
-            <div className="w-screen py-4 px-auto flex flex-row  items-center  flex-wrap justify-evenly ">
+            <div className="w-screen py-4  flex flex-row items-center  flex-wrap justify-evenly ">
                 {
                     products && products.length ?
                     products.map((item)=><div key={item._id} ><Product product={item}/></div>)

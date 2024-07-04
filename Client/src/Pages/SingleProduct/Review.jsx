@@ -2,7 +2,7 @@ import React ,{useState}from 'react'
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-import {Avatar,IconButton, Dialog, DialogBody, DialogFooter, DialogHeader,Button} from "@material-tailwind/react"
+import {IconButton, Dialog, DialogBody, DialogFooter, DialogHeader,Button} from "@material-tailwind/react"
 import {useSelector} from "react-redux"
 import axios from 'axios';
 import { ToastContainer, Zoom, toast } from 'react-toastify';
@@ -128,7 +128,6 @@ export default function Review({review,setReviews}) {
     return (
         <div className="p-2 flex flex-col w-80 h-40 overflow-clip border rounded-md border-gray-400">
             <div className='flex flex-row items-center gap-2 mb-2'>
-                <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" size="sm" />
                 <p className='truncate'>{review.user.username}</p>
             </div>
             <Box
@@ -153,8 +152,8 @@ export default function Review({review,setReviews}) {
 
                 <div className='self-end mt-auto '>
                     <button onClick={handleUpdateDialog} className="mr-2">
-                        <svg color='green' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        <svg color='green' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                         </svg>
                     </button>
                     <button onClick={handleDeleteDialog}>

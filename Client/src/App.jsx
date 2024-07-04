@@ -18,12 +18,12 @@ import SellerSignUp from './Pages/SellerPages/SellerSignUp/SellerSignUp'
 import SellerSignIn from './Pages/SellerPages/SellerSignIn/SellerSignIn'
 import SellerRoute from './PrivateRoutes/SellerRoute'
 import {setCart} from "../src/store/userCart/userCartSlice"
-import SellerProfilePage from './Pages/SellerPages/SellerProfilePage/SellerProfilePage'
 import Cart from './Pages/UserPages/CartPage/Cart'
 import SellerOrders from './Pages/SellerPages/SellerOrders/SellerOrders'
 import UserRoute from './PrivateRoutes/UserRoute'
 import UserOrders from './Pages/UserPages/UserOrdersPage/UserOrders'
 import WishList from './Pages/UserPages/WishList/WishList'
+import SellerProducts from './Pages/SellerPages/SellerProducts/SellerProducts'
 
 
 function App() {
@@ -70,21 +70,22 @@ function App() {
                     <Route exact path='/user/wishlist' element={<WishList/>}/>
                 </Route>
                 <Route element={<SellerRoute/>}>
-                    <Route exact path="/addproduct" element={<AddProduct/>}/>
+                    <Route exact path="/seller/addproduct" element={<AddProduct/>}/>
                 </Route>
                 <Route element={<SellerRoute/>}>
-                    <Route exact path="/sellerProfile" element={<SellerProfilePage/>}/>
+                    <Route exact path="/seller/myproducts" element={<SellerProducts/>}/>
                 </Route>
                 <Route element={<SellerRoute/>}>
                     <Route exact path="/seller/orders" element={<SellerOrders/>}/>
                 </Route>
+                
 
             
                 <Route exact path="/sign-up" element={<SignUp/>}/>
                 <Route exact path="/sign-in" element={<SignIn/>}/>
                 <Route exact path="/seller/sign-up" element={<SellerSignUp/>}/>
                 <Route exact path="/seller/sign-in" element={<SellerSignIn/>}/>
-                <Route exact path="/authentication" element={<Authentication/>}/>
+                {/* <Route exact path="/authentication" element={<Authentication/>}/> */}
 
 
             </Routes>

@@ -31,8 +31,10 @@ const coustomStyles={
 	headCells:{
 		style:{
 			fontSize:"1rem",
-			color:"blue",
-			fontWeight:"500"
+			color:"white",
+			fontWeight:"500",
+			backgroundColor:"blue",
+			
 		},
 	},
 	cells:{
@@ -62,6 +64,7 @@ export default function OrdersTable({columns,data,pending}) {
 				fixedHeader={true}
 				customStyles={coustomStyles}
 				pagination
+
 			/> 
 		</div>
     )

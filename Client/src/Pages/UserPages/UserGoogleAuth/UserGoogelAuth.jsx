@@ -34,7 +34,6 @@ export default function UserGoogelAuth() {
             }
             const res=await axios.post("http://localhost:8080/auth/user-google",{user});
             const data=await res.data;
-            console.log(data);
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.user));
@@ -84,19 +83,7 @@ export default function UserGoogelAuth() {
                 />{" "}
                 sign in with google
             </Button>
-        <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                transition={Zoom}
-            />
+        
         </>
     )
 }

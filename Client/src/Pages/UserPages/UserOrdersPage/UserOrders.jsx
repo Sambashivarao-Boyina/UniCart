@@ -64,7 +64,7 @@ export default function UserOrders() {
         }, 
         {
             name:"Total Cost",
-            cell:row=><p>${row.product.actualPrice * row.noOfItems}</p>,
+            cell:row=><p>${(row.product.actualPrice * row.noOfItems).toFixed(2)}</p>,
             sortable:true
         }, 
         {

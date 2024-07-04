@@ -2,9 +2,10 @@ const Product=require("../models/product");
 const Seller=require("../models/seller");
 const multer=require("multer");
 const upload=multer({dest:"../assets"});
+const ExpressError=require("../util/ExpressError");
 
 module.exports.getAllProducts=async (req,res)=>{
-    const products=await Product.find();
+    const products=await Product.find().populate("reviews");
     res.status(200).json({products,isSuccess:true});
 }
 
@@ -14,7 +15,7 @@ module.exports.getSingleProduct=async (req,res)=>{
     res.status(200).json({product,isSuccess:true});
 }
 
-module.exports.addNewProduct=async (req,res)=>{
+module.exports.addNewProduct=async (req,res,next)=>{
     const {product}=req.body;
     const newProduct=new Product({...product,reviews:[]});
     const seller=await Seller.findById(req.user.id);
@@ -24,9 +25,8 @@ module.exports.addNewProduct=async (req,res)=>{
         const saved=await newProduct.save();
         seller.products.push(saved._id);
         await seller.save();
-        console.log(saved);
     }catch(err){
-        return res.status(500).json({error:"Cannot create the product",isSuccess:false});
+        next(new ExpressError(404,err.message));
     }
     res.status(200).json({message:"New Product is Created Successfully",isSuccess:true});
 }
@@ -49,4 +49,31 @@ module.exports.deleteProduct = async (req,res)=>{
         res.status(200).json({message:"Product Deleted Successfully",isSuccess:true});
     }
 
+}
+
+
+module.exports.updateProduct= async (req,res)=>{
+
+    const {productID}=req.params;
+    const {product}=req.body;
+
+    const seller=await Seller.findById(req.user.id);
+    if(seller==null){
+        throw new ExpressError(404,"User not Found");
+    }
+
+    const findproduct=await Product.findById(productID);
+    if(findproduct==null){
+        throw new ExpressError(404,"Product Not Found");
+    }
+
+    if(!findproduct.seller.equals(req.user.id)){
+        throw new ExpressError(401,"You are not Seller of this product ");
+    }
+    
+    
+    await Product.findByIdAndUpdate(productID,product);
+    const updated=await Product.findById(productID);
+    
+    res.status(200).json({isSuccess:true,message:"product is updated",product:updated});
 }

@@ -70,12 +70,13 @@ export default function CommentSection({productId}) {
 
 
     return (
-        <div className='w-screen lg:px-40 lg:mt-10 p-4 '>
+        <div className='w-screen lg:px-40 lg:mt-10 p-1 sm:p-4 '>
+            <p className='lg:text-4xl font-bold mb-2 px-2'>Customer reviews:</p>
+
             {   
                 currUser && currUser.type==="User" ?
                 <>
-                    <p className='lg:text-4xl font-bold mb-2'>Customer reviews:</p>
-                    <div>
+                    <div className='p-2'>
                         <RatingBox rating={rating} setRating={setRating} hover={hover} setHover={setHover}/>
                         <div className=" relative  sm:w-[30rem] lg:w-[40rem] mt-1">
                             <Textarea  label="Your Comment" rows={4} value={comment} onChange={(event)=>setComment(event.target.value)} maxLength={200}/>

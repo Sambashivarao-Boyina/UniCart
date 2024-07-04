@@ -1,6 +1,6 @@
 import { useState } from "react";
 import productSchema from "./AddProductvalidation";
-import { Button, textarea } from "@material-tailwind/react";
+import { Button, Input } from "@material-tailwind/react";
 import {useFormik} from "formik";
 import axios from "axios";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
@@ -12,32 +12,49 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
 
 export default function AddProduct(){
 
-    const [uploadedImages,setUploadedImages]=useState([]);
+    const uploadFiles = async (files)=>{
+        let imageUrls=[];
+        
+        for(let i=0;i<files.length;i++){
+            let url=await handleFileUpload(files[i]);
+            imageUrls.push(url);
+        }
+        return imageUrls;
+    }
 
     const onSubmit= async (values,actions)=>{
-    
-        let {image1,image2,image3,...product}=values;
-        
-        
 
-        if (image1) {
-            handleFileUpload(image1,1);
+        let {image1,image2,image3,image4,image5,image6,...product}=values;
+        let imagesNeedToUplad=[];
+        if(image1){
+            imagesNeedToUplad.push(image1);
         }
-        if (image2) {
-            handleFileUpload(image2,2);
+        if(image2){
+            imagesNeedToUplad.push(image2);
         }
-        // if (image3) {
-        //     uploadPromises.push(handleFileUpload(image3,3));
-        // }
+        if(image3){
+            imagesNeedToUplad.push(image3);
+        }
+        if(image4){
+            imagesNeedToUplad.push(image4);
+        }
+        if(image5){
+            imagesNeedToUplad.push(image5);
+        }
+        if(image6){
+            imagesNeedToUplad.push(image6);
+        }
 
-                
-        product={...product,images:[...uploadedImages]};
-        console.log(product);
+        const uploadedImages=await uploadFiles(imagesNeedToUplad);
+
+        product={...product,thumbnail:uploadedImages[0],images:uploadedImages};
+
         sendRequest(product);
-        console.log("Send");
 
-        // actions.resetForm();
     }
+
+        
+    
 
     const {values,errors,touched,isSubmitting,handleChange,handleBlur,handleSubmit,setFieldValue}=useFormik({
         initialValues:{
@@ -46,13 +63,16 @@ export default function AddProduct(){
             price:'',
             discountPercentage:"",
             stock:"",
-            rating:"",
             brand:"",
             category:"",
-            thumbnail:"https://cdn.dummyjson.com/product-images/7/thumbnail.jpg",
+            warrantyInformation:"",
+            returnPolicy:"",
             image1:"",
             image2:"",
             image3:"",
+            image4:"",
+            image5:"",
+            image6:"",
             
         },
         validationSchema:productSchema,
@@ -61,9 +81,10 @@ export default function AddProduct(){
 
     const sendRequest = async (product)=>{
         const token=localStorage.getItem("access_token");
+        console.log("start requesting");
         try{
           
-            const res=await axios.post("http://localhost:8080/product/newproduct",{product},{
+            const res=await axios.post("http://localhost:8080/product/",{product},{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -107,9 +128,48 @@ export default function AddProduct(){
                 transition: Zoom,
             });
         }
-        setUploadedImages([]);
 
     }
+
+    const uploadFileAsync = async (uploadTask) => {
+        console.log("fileuplaoding");
+        try {
+          const progressPromise = new Promise((resolve, reject) => {
+            uploadTask.on(
+              'state_changed',
+              (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log(`Upload is ${progress}% done`);
+              },
+              (error) => {
+                reject(error);
+              },
+              () => {
+                resolve(uploadTask.snapshot.ref);
+              }
+            );
+          });
+      
+          const uploadRef = await progressPromise;
+          const downloadUrl = await getDownloadURL(uploadRef);
+          return downloadUrl;
+        } catch (error) {
+            console.error("Upload failed:", error);
+            toast.error("Image is Large", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Zoom,
+            });
+
+            return false;
+        }
+      };
 
     const handleFileChange = (event) => {
         const fieldName = event.target.name;
@@ -117,46 +177,17 @@ export default function AddProduct(){
         setFieldValue(fieldName, file);
     }
 
-    const handleFileUpload= async (image,num)=>{
-        
+    const handleFileUpload= async (image)=>{
         const storage=getStorage(app);
         const fileName=new Date().getTime()+image.name;
         const storageRef=ref(storage,fileName);
         const uploadTask=uploadBytesResumable(storageRef,image);
-        let url=""
-        uploadTask.on('state_changed',
-            (snapshot)=>{
-                const progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
-            },
-            (error)=>{
-                toast.error(error, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    transition: Zoom,
-                });
-            },
-            async ()=>{
-                try{
-                    const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                    console.log("uploaded",num);
-                    setUploadedImages((images) => [...images, downloadUrl]);
-                }catch(error){
-                    console.error("Error getting download URL:", error);
-                }
-                
-            }
-        )
-    
+        
+        const downloadUrl = await uploadFileAsync(uploadTask);
+        return downloadUrl;
     }
 
-
-
+   
     return (
       <div className="flex flex-row items-center justify-center mb-10">
         <form className=" flex mt-4 flex-col gap-6 w-[90%] md:w-3/4 lg:w-1/2">
@@ -247,19 +278,7 @@ export default function AddProduct(){
                 Enter Available Stock
                 </label>
             </div>
-            <div className="relative w-full min-w-[200px] h-10">
-                <input
-                className="peer lg:text-lg w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-                placeholder=""
-                onChange={handleChange}
-                value={values.rating}
-                name="rating"
-                type="number"
-                />
-                <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-blue-500 before:border-blue-gray-200 peer-focus:before:!border-blue-500 after:border-blue-gray-200 peer-focus:after:!border-blue-500">
-                Enter Rating
-                </label>
-            </div>
+          
             <div className="relative w-full min-w-[200px] h-10">
                 <input
                 className="peer lg:text-lg w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
@@ -276,6 +295,41 @@ export default function AddProduct(){
                 Enter Brand
                 </label>
             </div>
+            
+            <div className="relative w-full min-w-[200px] h-10">
+                <input
+                className="peer lg:text-lg w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+                placeholder=""
+                onChange={handleChange}
+                value={values.warrantyInformation}
+                name="warrantyInformation"
+                type="text"
+                />
+                {errors.warrantyInformation && touched.warrantyInformation && (
+                <div className="mb-2 text-red-500 text-sm">{errors.warrantyInformation}</div>
+                )}
+                <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-blue-500 before:border-blue-gray-200 peer-focus:before:!border-blue-500 after:border-blue-gray-200 peer-focus:after:!border-blue-500">
+                Enter WarrantyInformation
+                </label>
+            </div>
+
+            <div className="relative w-full min-w-[200px] h-10">
+                <input
+                className="peer lg:text-lg w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+                placeholder=""
+                onChange={handleChange}
+                value={values.returnPolicy}
+                name="returnPolicy"
+                type="text"
+                />
+                {errors.returnPolicy && touched.returnPolicy && (
+                <div className="mb-2 text-red-500 text-sm">{errors.returnPolicy}</div>
+                )}
+                <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-blue-500 before:border-blue-gray-200 peer-focus:before:!border-blue-500 after:border-blue-gray-200 peer-focus:after:!border-blue-500">
+                Enter ReturnPolicy
+                </label>
+            </div>
+
             <div className="relative h-10 w-full min-w-[200px]">
                 <select
                 name="category"
@@ -283,27 +337,30 @@ export default function AddProduct(){
                 value={values.category}
                 className="peer  h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-bule-500 focus:border-2 focus:border-blue-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 >
-                <option value="smartphones">smartphones</option>
-                <option value="laptops">laptops</option>
+                <option value="beauty">beauty</option>
                 <option value="fragrances">fragrances</option>
-                <option value="skincare">skincare</option>
+                <option value="furniture">furniture</option>
                 <option value="groceries">groceries</option>
                 <option value="home-decoration">home-decoration</option>
-                <option value="furniture">furniture</option>
-                <option value="tops">tops</option>
-                <option value="womens-dresses">womens-dresses</option>
-                <option value="womens-shoes">womens-shoes</option>
+                <option value="kitchen-accessories">kitchen-accessories</option>
+                <option value="laptops">laptops</option>
                 <option value="mens-shirts">mens-shirts</option>
                 <option value="mens-shoes">mens-shoes</option>
                 <option value="mens-watches">mens-watches</option>
-                <option value="womens-watches">womens-watches</option>
-                <option value="womens-bags">womens-bags</option>
-                <option value="womens-jewellery">womens-jewellery</option>
-                <option value="sunglasses">sunglasses</option>
-                <option value="automotive">automotive</option>
+                <option value="mobile-accessories">mobile-accessories</option>
                 <option value="motorcycle">motorcycle</option>
-                <option value="lighting">lighting</option>
-                <option value="others">others</option>
+                <option value="skin-care">skin-care</option>
+                <option value="smartphones">smartphones</option>
+                <option value="sports-accessories">sports-accessories</option>
+                <option value="sunglasses">sunglasses</option>
+                <option value="tablets">tablets</option>
+                <option value="tops">tops</option>
+                <option value="vehicle">vehicle</option>
+                <option value="womens-bags">womens-bags</option>
+                <option value="womens-dresses">womens-dresses</option>
+                <option value="womens-jewellery">womens-jewellery</option>
+                <option value="womens-shoes">womens-shoes</option>
+                <option value="womens-watches">womens-watches</option>
                 </select>
                 {errors.category && touched.category && (
                 <div className="mb-2 text-red-500 text-sm">{errors.category}</div>
@@ -312,8 +369,9 @@ export default function AddProduct(){
                 Select a City
                 </label>
             </div>
+            
             <div className="relative w-full min-w-[200px] h-10 mb-2">
-                <label htmlFor="image1" className="text-blue-gray-700">Image-1:</label>
+                <label htmlFor="image1" className="text-blue-gray-700">Thumbnail Image:</label>
                 <input 
                     onChange={handleFileChange}
                     type="file" 
@@ -322,6 +380,9 @@ export default function AddProduct(){
                     accept="image/*"  
                     className="image-upload border-solid border-blue-gray-200 border-[0.75px] w-full h-10 rounded-md text-blue-gray-700 text-sm "
                 />
+                {errors.image1 && touched.image1 && (
+                <div className="mb-2 text-red-500 text-sm">{errors.image1}</div>
+                )}
             </div>
             <div className="relative w-full min-w-[200px] h-10 my-2">
                 <label htmlFor="image2" className="text-blue-gray-700">Image-2:</label>
@@ -332,7 +393,10 @@ export default function AddProduct(){
                     id="image2" 
                     accept="image/*"  
                     className="image-upload border-solid border-blue-gray-200 border-[0.75px] w-full h-10 rounded-md text-blue-gray-700 text-sm "
-                />          
+                />   
+                {errors.image2 && touched.image2 && (
+                <div className="mb-2 text-red-500 text-sm">{errors.image2}</div>
+                )}       
             </div>
             <div className="relative w-full min-w-[200px] h-10 my-2"> 
                 <label htmlFor="image3" className="text-blue-gray-700">Image-3:</label>
@@ -340,50 +404,66 @@ export default function AddProduct(){
                     onChange={handleFileChange}
                     type="file" 
                     name="image3" 
-                    id="image1" 
+                    id="image3" 
                     accept="image/*"  
                     className="image-upload border-solid border-blue-gray-200 border-[0.75px] w-full h-10 rounded-md text-blue-gray-700 text-sm "
-                />   
+                /> 
+                {errors.image3 && touched.image3 && (
+                <div className="mb-2 text-red-500 text-sm">{errors.image3}</div>
+                )}  
             </div>
-            {/* <div className="relative w-full min-w-[200px] h-10 my-2"> 
+            <div className="relative w-full min-w-[200px] h-10 my-2"> 
                 <label htmlFor="image4" className="text-blue-gray-700">Image-4:</label>
                 <input 
+                    onChange={handleFileChange}
                     type="file" 
                     name="image4" 
-                    id="image1" 
+                    id="image4" 
                     accept="image/*"  
                     className="image-upload border-solid border-blue-gray-200 border-[0.75px] w-full h-10 rounded-md text-blue-gray-700 text-sm "
-                />   
+                />  
+                {errors.image4 && touched.image4 && (
+                <div className="mb-2 text-red-500 text-sm">{errors.image4}</div>
+                )} 
             </div>
             <div className="relative w-full min-w-[200px] h-10 my-2 ">
                 <label htmlFor="image5" className="text-blue-gray-700">Image-5:</label> 
                 <input 
+                    onChange={handleFileChange}
                     type="file" 
                     name="image5" 
                     id="image5" 
                     accept="image/*"  
                     className="image-upload border-solid border-blue-gray-200 border-[0.75px] w-full h-10 rounded-md text-blue-gray-700 text-sm "
-                />   
-            </div> */}
-            {/* <div className="relative w-full min-w-[200px] h-10 my-2"> 
+                /> 
+                {errors.image5 && touched.image5 && (
+                <div className="mb-2 text-red-500 text-sm">{errors.image5}</div>
+                )}   
+            </div>
+            <div className="relative w-full min-w-[200px] h-10 my-2"> 
                 <label htmlFor="image6" className="text-blue-gray-700">Image-6:</label>
-                <input 
+                <input
+                    onChange={handleFileChange}
                     type="file" 
                     name="image6" 
                     id="image6" 
                     accept="image/*"  
                     className="image-upload border-solid border-blue-gray-200 border-[0.75px] w-full h-10 rounded-md text-blue-gray-700 text-sm "
-                />   
-            </div> */}
+                />  
+                {errors.image6 && touched.image6 && (
+                <div className="mb-2 text-red-500 text-sm">{errors.image6}</div>
+                )}  
+                
+            </div>
             <div>
                 <Button
-                color="blue"
-                disabled={isSubmitting}
-                className="lg:text-lg"
-                onClick={handleSubmit}
-                fullWidth
+                    color="blue"
+                    disabled={isSubmitting}
+                    className="lg:text-lg"
+                    onClick={handleSubmit}
+                    fullWidth
                 >
-                Create Product
+                    Create Product
                 </Button>
             </div>
             <ToastContainer

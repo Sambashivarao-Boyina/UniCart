@@ -4,20 +4,29 @@ import React from 'react'
 export default function ItemCartCount({cartCount,setCartCount}) {
 
     const handleCartCountChange = (event)=>{
-        if(event.target.value>=0){
+        if(event.target.value>=0 && event.target.value<=10){
             setCartCount(event.target.value);
         }
     }
 
     const handleCartIncrease = (event)=>{
         setCartCount((curr)=>{
-            return curr+1;
+            if(curr<10){
+                return curr+1;
+            }else{
+                return curr;
+            }
         })
     }
 
     const handleCartDecrease = (event)=>{
         setCartCount((curr)=>{
-            return curr-1;
+            if(curr>1){
+                return curr-1;
+            }else{
+                return curr;
+            }
+
         })
     }
 

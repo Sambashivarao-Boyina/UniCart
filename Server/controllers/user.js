@@ -159,6 +159,9 @@ module.exports.removeFromWishList = async (req,res,next)=>{
         user=await User.findById(req.user.id);
     }
     res.status(200).json({isSuccess:true,message:"Removed to wishlist",user});
+}
 
-    
+module.exports.getWishlist=async (req,res)=>{
+    const user=await User.findById(req.user.id).populate("wishlist");
+    res.status(200).json({isSuccess:true,wishlist:user.wishlist});
 }

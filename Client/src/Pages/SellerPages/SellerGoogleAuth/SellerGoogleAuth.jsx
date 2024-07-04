@@ -36,7 +36,6 @@ export default function SellerGoogelAuth() {
             const res=await axios.post("http://localhost:8080/auth/seller-google",{seller});
             const data=await res.data;
             if(data.isSuccess){
-                console.log(data.seller);
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.seller));
                 navigate("/");
@@ -85,19 +84,7 @@ export default function SellerGoogelAuth() {
                 />{" "}
                 sign in with google
             </Button>
-        <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                transition={Zoom}
-            />
+       
         </>
     )
 }

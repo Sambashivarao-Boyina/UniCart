@@ -2,6 +2,7 @@ const mongoose=require("mongoose");
 const Product=require("../models/product");
 const dotenv=require("dotenv");
 const path=require("path");
+const Seller=require("../models/seller");
 
 const envPath = path.resolve(__dirname, '..', '.env');
 
@@ -29,20 +30,22 @@ async function initDatabase(){
     let products=await fetchProducts();
     products=products.map(product=>{
         let {id,dimensions,shippingInformation,availabilityStatus,reviews,minimumOrderQuantity,meta,...rest}=product;
-        rest={...rest,seller:"667e9930912c53cd6489c5a6"};
+        rest={...rest,seller:"6683e2b68d15fe56ebf2ccbf"};
         return rest;
     })
     let count=0;
-    for(let i=0;i<products.length;i++){
+    const seller=await Seller.findById("6683e2b68d15fe56ebf2ccbf");
+    for(let i=products.length-1;i>=0;i--){
         try{
             const product=new Product({...products[i],reviews:[]});
-            
-            await product.save();
+            const savedProduct =await product.save();
+            seller.products.push(savedProduct._id);
             count++;
         }catch(err){
             console.log(err);
         }
     }
+    await seller.save();
     console.log(count);
     // await Product.insertMany(products);
 }

@@ -27,7 +27,7 @@ export default function SingleProduct(){
     const [product,setProduct]=useState(null);
     const [loading,setLoading]=useState(false);
     const {currUser}=useSelector((state)=>state.user);
-    const [count,setCount]=useState(0);
+    const [count,setCount]=useState(1);
     const token=localStorage.getItem("access_token");
     const {cart}=useSelector((state)=>state.userCart);
     const [isContainInCart,setIsContainInCart]=useState(false);
@@ -202,8 +202,8 @@ export default function SingleProduct(){
                         <p className="max-w-xl">{product.description}</p>
                         <p className="max-w-xl">{product.warrantyInformation}</p>
                         <p className="max-w-xl">{product.returnPolicy}</p>
-                        <p><span className="text-4xl font-bold">${discountCalculator(product.price,product.discountPercentage)}</span><span className="line-through text-xl ml-1">${product.price}</span></p>
-                        <p className="font-medium max-sm:text-xl sm:text-2xl">-{product.discountPercentage}%</p>
+                        <p><span className="text-4xl font-bold">${discountCalculator(product.price,product.discountPercentage)}</span><span className="line-through text-gray-500 text-xl ml-1">${product.price}</span></p>
+                        <p className="font-medium text-green-800 max-sm:text-xl sm:text-2xl">{product.discountPercentage}% off</p>
 
                         {
                             product.reviews && product.reviews.length>0 && <p className="flex items-center"><Rating name="read-only" value={product.averageRating} precision={0.5} readOnly /> <span className="ml-2">over {product.reviews.length} ratings</span> </p>
@@ -239,11 +239,6 @@ export default function SingleProduct(){
                                     cart && cart.findIndex(cartItem => cartItem.product===productId)!==-1 && <Button onClick={removeFromCart} size="md" variant="gradient" color="blue" className="rounded-full w-50 px-auto mt-4 text-xl" >Remove From Cart</Button>
                                 } */}
                             </>
-                            :null
-                        }
-                        {
-                            currUser && currUser.type==="Seller" && product && product.seller===currUser._id ?
-                                <Button className="lg:text-lg" color="blue">Edit Product</Button>
                             :null
                         }
                     </div>
