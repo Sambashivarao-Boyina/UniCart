@@ -186,8 +186,8 @@ export default function SingleProduct(){
     }
     
     return (
-        <div className="bg-teal-50 flex flex-col pb-10   lg:pb-20 min-h-screen lg:pt-10 pt-2">
-            <div className=" flex flex-col lg:flex-row  items-center w-scren   ">
+        <div className=" flex flex-col pb-10   lg:pb-20 min-h-screen lg:pt-10 pt-2 lg:w-[90%] mx-auto">
+            <div className="w-full flex flex-col lg:flex-row  items-center   ">
                 {
                     product && product.images && product.images.length ?
                     <ImagesContainer  images={product.images}/>
@@ -209,17 +209,28 @@ export default function SingleProduct(){
                             product.reviews && product.reviews.length>0 && <p className="flex items-center"><Rating name="read-only" value={product.averageRating} precision={0.5} readOnly /> <span className="ml-2">over {product.reviews.length} ratings</span> </p>
                         }
                         {
+                            product.stock===0 && <p className="text-red-700 font-bold">Out of Stock</p>
+                        }
+                        {
+                            product.stock < 5 &&  product.stock > 0  && <p className="font-bold text-yellow-700"> Only {product.stock} available</p>
+                        }
+                        {
+                            product.stock > 5  && <p className="font-bold text-green-700"> {product.stock} available</p>
+                        }
+
+
+                        {
                             currUser===null || currUser.type=="User" ?
                             <>
 
-                                <ItemCartCount cartCount={count} setCartCount={setCount}/>
+                                <ItemCartCount cartCount={count} setCartCount={setCount} maxCount={product.stock}/>
                                 {/* <input type="number" placeholder="enter no of items" value={count} onChange={handleCountChange} className="p-2 border-blue-gray-700 border-2 rounded-md" name="count" /> */}
                                 <div className="flex flex-row items-center ">
-                                    <Button onClick={addToCart} size="md" variant="gradient" color="blue" className=" w-48 mt-4 text-xl" >Add To Cart</Button>
+                                    <Button onClick={addToCart} size="md"   className="bg-primary w-48 mt-4 text-xl" >Add To Cart</Button>
                                     <div className="ml-4"><WishListIcon productId={productId}/></div>
                                     <div className="flex items-center mt-4 ml-4 gap-x-4 ">
                                         <IconButton
-                                            color="blue"
+                                            className="bg-primary"
                                             size="lg"
                                             onMouseLeave={() => setCopied(false)}
                                             onClick={() => {

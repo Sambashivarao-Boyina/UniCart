@@ -21,6 +21,8 @@ export default function SellerOrders() {
     const [orderList,setOrdersList]=useState([]);
 
     const getProducts=async ()=>{
+
+        console.log("getProducts");
         const token=localStorage.getItem("access_token");
         setLoading(true);
         try{
@@ -82,8 +84,7 @@ export default function SellerOrders() {
         },
         {
             name:"Product",
-            selector:row=>row.product.title,
-            sortable:true,
+		    cell: row => <Link to={`/singleProduct/${row.product._id}`}><p className=" max-w-40 truncate">{row.product.title}</p></Link>,            
         },
         {
             name:"Count",
@@ -97,7 +98,7 @@ export default function SellerOrders() {
         }, 
         {
             name:"Total Cost",
-            cell:row=><p>${row.product.actualPrice * row.noOfItems}</p>,
+            cell:row=><p>${(row.product.actualPrice * row.noOfItems).toFixed(2)}</p>,
             sortable:true
         }, 
         {

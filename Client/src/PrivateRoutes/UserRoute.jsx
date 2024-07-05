@@ -4,5 +4,9 @@ import {Navigate,Outlet} from "react-router-dom"
 
 export default function UserRoute() {
     const {currUser}=useSelector((state)=>state.user);
-    return currUser && currUser.type==="User" ? <Outlet/> : <Navigate to={"/sign-in"} />;
+    if(currUser && currUser.type==="User"){
+        return  <Outlet/>
+    } else {
+        <Navigate to={"/sign-in"} />
+    }
 }

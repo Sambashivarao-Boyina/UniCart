@@ -15,20 +15,25 @@ module.exports.placeOrder=async (req,res)=>{
     
     for(let i=0;i<orderDetails.cart.length;i++){
         const product=await Product.findById(orderDetails.cart[i].product);
-        
-        const order=new Order();
-        order.buyyer=req.user.id;
-        order.seller=product.seller;
-        order.product=orderDetails.cart[i].product;
-        order.noOfItems=orderDetails.cart[i].count;
-        order.address=orderDetails.address;
 
-        const productSeller=await Seller.findById(product.seller);
+        if(product.stock>=orderDetails.cart[i].count){
+            const order=new Order();
+            product.stock=product.stock-orderDetails.cart[i].count;
 
-        const newOrder=await order.save();
-        user.orders.push(newOrder._id);
-        productSeller.orders.push(newOrder.id);
-        await productSeller.save();
+            order.buyyer=req.user.id;
+            order.seller=product.seller;
+            order.product=orderDetails.cart[i].product;
+            order.noOfItems=orderDetails.cart[i].count;
+            order.address=orderDetails.address;
+
+            const productSeller=await Seller.findById(product.seller);
+
+            const newOrder=await order.save();
+            user.orders.push(newOrder._id);
+            productSeller.orders.push(newOrder.id);
+            await productSeller.save();
+            await product.save();
+        }
 
     }
     user.cart=[];

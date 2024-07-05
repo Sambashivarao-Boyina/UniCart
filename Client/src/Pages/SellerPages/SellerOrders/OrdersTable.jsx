@@ -35,7 +35,7 @@ const coustomStyles={
 			fontSize:"1rem",
 			color:"white",
 			fontWeight:"500",
-			backgroundColor:"blue"
+			backgroundColor:"#4A00FF"
 		},
 	},
 	cells:{

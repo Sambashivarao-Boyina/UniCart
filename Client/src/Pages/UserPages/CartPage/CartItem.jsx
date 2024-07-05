@@ -11,6 +11,8 @@ import {
     DialogBody,
     DialogFooter,
     Input,
+    Spinner
+    
 } from "@material-tailwind/react";
 import {  Bars3Icon } from "@heroicons/react/24/solid";
 import axios from "axios";
@@ -34,12 +36,14 @@ export default function CartItem({item}) {
     const handleChangeCountOfCartOpen = () => setChangeCountOfCartOpen(!changeCoutOfCartOpen);
 
     const [cartCount,setCartCount]=useState(item.count);
+    const [loading,setLoading]=useState(false);
 
 
     const dispatch=useDispatch();
 
     const handleRemoveFromCart = async ()=>{
         try{
+            setLoading(true);
             const token=localStorage.getItem("access_token");
             const res=await axios.put(`http://localhost:8080/user/removeFromCart/${item.product._id}`,{},{
                 headers:{
@@ -48,6 +52,7 @@ export default function CartItem({item}) {
             })
             const data=await res.data;
             if(data.isSuccess){
+                setLoading(false);
                 dispatch(setCart(data.cart));
                 toast.success(data.message, {
                     position: "top-center",
@@ -61,6 +66,7 @@ export default function CartItem({item}) {
                     transition: Zoom,
                 });
             }else{
+                setLoading(false);
                 toast.error(data.message, {
                     position: "top-center",
                     autoClose: 5000,
@@ -75,6 +81,7 @@ export default function CartItem({item}) {
             }
 
         }catch(error){
+            setLoading(false);
             toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
@@ -93,6 +100,7 @@ export default function CartItem({item}) {
 
     const handleChangeCount = async ()=>{
         try{
+            setLoading(true);
             const token=localStorage.getItem("access_token");
             const res=await axios.put(`http://localhost:8080/user/changeCount/${item.product._id}`,{
                 count:parseInt(cartCount)
@@ -103,6 +111,7 @@ export default function CartItem({item}) {
             })
             const data=await res.data;
             if(data.isSuccess){
+                setLoading(false);
                 dispatch(setCart(data.cart));
                 toast.success(data.message, {
                     position: "top-center",
@@ -116,6 +125,7 @@ export default function CartItem({item}) {
                     transition: Zoom,
                 });
             }else{
+                setLoading(false);
                 toast.error(data.message, {
                     position: "top-center",
                     autoClose: 5000,
@@ -131,6 +141,7 @@ export default function CartItem({item}) {
 
 
         }catch(error){
+            setLoading(false);
             toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
@@ -147,16 +158,26 @@ export default function CartItem({item}) {
     }
 
     
+    if(loading){
+        return (
+            <div className=" w-full h-60 lg:w-[47%] flex items-center justify-center">
+                <div className=" w-full flex items-center justify-center">
+                    <Spinner className="h-16 w-16 text-gray-900/50" />
+                </div>
+            </div>
+        )
+    }
+    
 
     return (
-        <div className="p-4 gap-4 border-2 border-black text-lg text-black w-full lg:w-[47%] my-4 rounded-lg flex flex-col items-center  flex-wrap relative">
-            <div className="w-full  flex flex-row-reverse mb-[-3    0px] z-0">
-                <Menu >
+        <div className="p-4 gap-4 border-2  text-lg text-black w-full min-w-[315px]  my-4 rounded-xl shadow-lg hover:shadow-2xl  flex flex-col items-center  flex-wrap relative">
+            <div className="w-full  flex flex-row-reverse mb-[-30px] z-0">
+                <Menu allowHover="true">
                     <MenuHandler>
-                        <Bars3Icon className="w-7 h-7 border-black border-[1px] rounded-md" />
+                        <Bars3Icon className="w-7 h-7  rounded-md" />
                     </MenuHandler>
                     <MenuList>
-                        <MenuItem onClick={handleChangeCountOfCartOpen}>Change Count</MenuItem>
+                        <MenuItem className="hover:bg-primary" onClick={handleChangeCountOfCartOpen}>Change Count</MenuItem>
                         <MenuItem onClick={handleRemoveCartOpen}>Remove From Cart</MenuItem>
                     </MenuList>
                 </Menu>
@@ -217,28 +238,25 @@ export default function CartItem({item}) {
                     </DialogFooter>
                 </Dialog>
             </div>
-            <div className=" w-full flex flex-row items-center justify-evenly gap-4 flex-wrap">
-                <div className="h-[200px] w-[250px] ">
-                    <Link to={`/singleProduct/${item.product._id}`}><img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" /></Link>
+            <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-between w-full gap-2">
+                <div className=" flex items-center lg:justify-start justify-evenly">
+                    <div className="h-[50px] w-[50px]  sm:h-[100px] sm:w-[150px] ">
+                        <Link to={`/singleProduct/${item.product._id}`}><img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" /></Link>
+                    </div>
+                    <div>
+                        <p className="truncate text-md sm:text-xl font-bold max-w-40 sm:max-w-60">{item.product.title}</p>
+                        <p>{item.product.brand}</p>
+                    </div>
+                
                 </div>
-                <div className="h-full flex flex-col ">
-                    <div className="my-grid  text-sm w-[200px] sm:text-lg sm:w-[375px]  truncate" >
-                        <b>Name </b><b >:</b><p > {item.product.title}</p>
-                        <b>Price </b><b>:</b><p> ${(item.product.price).toFixed(2)}</p>
-                        <b>Discount </b><b>:</b><p> {item.product.discountPercentage}%</p>
-                        <b>FinalPrice </b><b>:</b><p> ${(item.product.actualPrice).toFixed(2)}</p>
+                <div className=" mr-auto  lg:ml-auto  ">
+                    <div className="ml-auto my-grid2 w-[375px] text-md sm:text-lg ">
+                        <b>No of Items </b><b>:</b><p> {item.count}</p>
+                        <b>Total Price </b><b>:</b><p className="truncate"> ${(item.count*item.product.actualPrice).toFixed(2)}</p>
                     </div>
                 </div>
-            
-            </div>
-            <div className="w-full self-end">
-                <hr className="border-t-2 mb-3 border-blue-gray-300" />
-                <div className="my-grid2 w-[375px]">
-                    <b>No of Items </b><b>:</b><p> {item.count}</p>
-                    <b>Total Price </b><b>:</b><p className="truncate"> ${(item.count*item.product.actualPrice).toFixed(2)}</p>
-                </div>
-            </div>
          
+           </div>
         
         </div>
     )

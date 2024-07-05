@@ -13,6 +13,7 @@ export default withMT({
     extend: {},
   },
   plugins: [
+    require('daisyui'),
     function ({ addBase, addComponents, addUtilities, theme }) {
       addUtilities({
         '.no-spinner': {

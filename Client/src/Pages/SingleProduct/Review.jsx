@@ -126,7 +126,7 @@ export default function Review({review,setReviews}) {
     }
 
     return (
-        <div className="p-2 flex flex-col w-80 h-40 overflow-clip border rounded-md border-gray-400">
+        <div className="p-2 flex flex-col w-full h-40 overflow-clip border rounded-md border-gray-200 shadow-lg ">
             <div className='flex flex-row items-center gap-2 mb-2'>
                 <p className='truncate'>{review.user.username}</p>
             </div>

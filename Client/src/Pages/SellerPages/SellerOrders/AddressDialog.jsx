@@ -8,7 +8,7 @@ export default function AddressDialog({address}) {
 
     return (
         <> 
-            <Button onClick={handleShowAddress} className='text-sm px-2' color="blue" variant='gradient'>Address</Button>
+            <Button onClick={handleShowAddress} className='text-sm px-2 bg-primary' >Address</Button>
             <Dialog open={showAddress} handler={handleShowAddress} >
                 <DialogHeader>
                     Address of this Order:

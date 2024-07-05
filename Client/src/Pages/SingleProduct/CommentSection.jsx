@@ -70,7 +70,7 @@ export default function CommentSection({productId}) {
 
 
     return (
-        <div className='w-screen lg:px-40 lg:mt-10 p-1 sm:p-4 '>
+        <div className='w-full  lg:mt-10 p-1 sm:p-4 '>
             <p className='lg:text-4xl font-bold mb-2 px-2'>Customer reviews:</p>
 
             {   
@@ -103,7 +103,7 @@ export default function CommentSection({productId}) {
                                                         setHover(0)}} size="sm" color="red" variant="text" className="rounded-md">
                                     Cancel
                                 </Button>
-                                <Button size="sm" className="rounded-md" onClick={sendReview}>
+                                <Button size="sm" className="rounded-md bg-primary" onClick={sendReview}>
                                     Post Comment
                                 </Button>
                                 </div>

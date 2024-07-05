@@ -145,7 +145,7 @@ export function SignIn() {
                     {errors.password && touched.password  && <div className="mb-2 text-red-500 text-sm">{errors.password}</div>}
 
                 </div>
-                <Button onClick={handleSubmit} disabled={isSubmitting} color="gray" size="lg" className="mt-6" fullWidth>
+                <Button onClick={handleSubmit} disabled={isSubmitting} size="lg" className="mt-6 bg-[#4A00FF]" fullWidth>
                     sign in
                 </Button>
                 <SellerGoogelAuth/>
@@ -164,6 +164,19 @@ export function SignIn() {
             </form>
             
         </div>
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Zoom}
+        />
         </section>
     );
 }

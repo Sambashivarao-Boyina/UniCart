@@ -17,19 +17,24 @@ import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import {Rating} from "@mui/material";
+import { Spinner } from "@material-tailwind/react";
+
 
 export default function SellerProduct({product,setProducts}) {
 
 
     const [open,setOpen]=useState(false);
+    const [loading,setLoading]=useState(false);
+
     const handleOpen=()=>{
         setOpen(!open)
         resetForm();
     };
 
     const onSubmit = async (values,actions)=>{
-        console.log(values);
-        try{    
+        
+        try{ 
+            setLoading(true);
             const token=localStorage.getItem("access_token");
             const res=await axios.put(`http://localhost:8080/product/${product._id}`,
                 {
@@ -79,9 +84,10 @@ export default function SellerProduct({product,setProducts}) {
                     transition: Zoom,
                 });
             }
+            resetForm();
+            setLoading(false);
             
         }catch(error){
-            console.log(error);
             toast.error(error?.response?.data?.message, {
                 position: "top-center",
                 autoClose: 5000,
@@ -93,6 +99,7 @@ export default function SellerProduct({product,setProducts}) {
                 theme: "light",
                 transition: Zoom,
             });
+            setLoading(false);
         }
         handleOpen();
     }
@@ -115,10 +122,17 @@ export default function SellerProduct({product,setProducts}) {
         onSubmit,
     })
 
+    if(loading){
+        return (
+            <div className="w-80 sm:w-96 h-80 flex items-center justify-center">
+                <Spinner className="h-12 w-12" />
+            </div>
+        )
+    }
 
     return (
         <div>
-            <div className="w-80 sm:w-96 bg-white flex flex-col border p-2 border-gray-400 bg-red  m-4  rounded-lg hover:scale-110 duration-300">
+            <div className="w-80 sm:w-96 bg-white flex flex-col border p-2 border-gray-100 bg-red  m-4  rounded-lg hover:scale-110 duration-300 shadow-md hover:shadow-xl">
                 <svg onClick={handleOpen} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-green-800 ml-auto cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                 </svg>
@@ -133,11 +147,6 @@ export default function SellerProduct({product,setProducts}) {
                     <div>
                         <p><span className="text-3xl font-bold">${(product.actualPrice).toFixed(2)}</span><span className="line-through text-gray-600 text-lg ml-1">${product.price}</span></p>
                         <p className="font-medium text-green-800  text-md">{product.discountPercentage}% off</p>
-                    </div>
-                    <div className="self-end ml-auto">
-                        {
-                            product.reviews && product.reviews.length>0 && <p className="flex items-end "><Rating  value={product.averageRating} precision={0.5}  readOnly /> </p>
-                        }
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { useDebugValue, useState } from "react";
+import {  useState } from "react";
 
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
@@ -168,7 +168,7 @@ export function SignUp() {
                     />
                     {errors.password && touched.password  && <div className="mb-2 text-red-500 text-sm">{errors.password}</div>}
                 </div>
-                <Button onClick={handleSubmit} color="gray" size="lg" disabled={isSubmitting} className="mt-6" fullWidth>
+                <Button onClick={handleSubmit} size="lg" disabled={isSubmitting} className="mt-6 bg-primary" fullWidth>
                     sign up
                 </Button>
                 
@@ -186,6 +186,19 @@ export function SignUp() {
             </form>
            
         </div>
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Zoom}
+        />
         </section>
     );
 }

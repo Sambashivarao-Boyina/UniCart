@@ -56,40 +56,28 @@ function App() {
         <>
             <ComplexNavbar/>
             <Routes>
-                <Route exact path="/" element={<Products/>}/>
-                <Route exact path="/products" element={<Products/>}/>
-                <Route exact path="/singleProduct/:productId" element={<SingleProduct/>}/>
-
-                <Route element={<SignInRoute/>}>
-                    <Route exact path='/cart' element={<Cart/>}/>
-                </Route>
-                <Route element={<UserRoute/>}>
-                    <Route exact path='/user/orders' element={<UserOrders/>}/>
-                </Route>
-                <Route element={<UserRoute/>}>
-                    <Route exact path='/user/wishlist' element={<WishList/>}/>
-                </Route>
-                <Route element={<SellerRoute/>}>
-                    <Route exact path="/seller/addproduct" element={<AddProduct/>}/>
-                </Route>
-                <Route element={<SellerRoute/>}>
-                    <Route exact path="/seller/myproducts" element={<SellerProducts/>}/>
-                </Route>
-                <Route element={<SellerRoute/>}>
-                    <Route exact path="/seller/orders" element={<SellerOrders/>}/>
-                </Route>
+                <Route  path="/" element={<Products/>}/>
+                <Route  path="/products" element={<Products/>}/>
+                <Route  path="/singleProduct/:productId" element={<SingleProduct/>}/>
+                <Route  path="/sign-up" element={<SignUp/>}/>
+                <Route  path="/sign-in" element={<SignIn/>}/>
+                <Route  path="/seller/sign-up" element={<SellerSignUp/>}/>
+                <Route  path="/seller/sign-in" element={<SellerSignIn/>}/>
                 
+                <Route element={<UserRoute/>}>
+                    <Route  path='/user/orders' element={<UserOrders/>}/>
+                    <Route  path='/user/wishlist' element={<WishList/>}/>
+                    <Route  path='/cart' element={<Cart/>}/>
+                </Route>
 
-            
-                <Route exact path="/sign-up" element={<SignUp/>}/>
-                <Route exact path="/sign-in" element={<SignIn/>}/>
-                <Route exact path="/seller/sign-up" element={<SellerSignUp/>}/>
-                <Route exact path="/seller/sign-in" element={<SellerSignIn/>}/>
-                {/* <Route exact path="/authentication" element={<Authentication/>}/> */}
+                <Route element={<SellerRoute/>}>
+                    <Route  path="/seller/addproduct" element={<AddProduct/>}/>
+                    <Route  path="/seller/myproducts" element={<SellerProducts/>}/>
+                    <Route  path="/seller/orders" element={<SellerOrders/>}/>
+                </Route>
+                {/* <Route path="/authentication" element={<Authentication/>}/> */}
 
-
-            </Routes>
-            
+            </Routes>       
         </>
     )
 }

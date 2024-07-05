@@ -413,7 +413,7 @@ export default function AddProduct(){
                 )}  
             </div>
             <div className="relative w-full min-w-[200px] h-10 my-2"> 
-                <label htmlFor="image4" className="text-blue-gray-700">Image-4:</label>
+                <label htmlFor="image4" className="text-blue-gray-700">Image-4(optional):</label>
                 <input 
                     onChange={handleFileChange}
                     type="file" 
@@ -427,7 +427,7 @@ export default function AddProduct(){
                 )} 
             </div>
             <div className="relative w-full min-w-[200px] h-10 my-2 ">
-                <label htmlFor="image5" className="text-blue-gray-700">Image-5:</label> 
+                <label htmlFor="image5" className="text-blue-gray-700">Image-5(optional):</label> 
                 <input 
                     onChange={handleFileChange}
                     type="file" 
@@ -441,7 +441,7 @@ export default function AddProduct(){
                 )}   
             </div>
             <div className="relative w-full min-w-[200px] h-10 my-2"> 
-                <label htmlFor="image6" className="text-blue-gray-700">Image-6:</label>
+                <label htmlFor="image6" className="text-blue-gray-700">Image-6(optional):</label>
                 <input
                     onChange={handleFileChange}
                     type="file" 
@@ -457,9 +457,9 @@ export default function AddProduct(){
             </div>
             <div>
                 <Button
-                    color="blue"
                     disabled={isSubmitting}
-                    className="lg:text-lg"
+                    loading={isSubmitting}
+                    className="lg:text-lg bg-[#4A00FF]"
                     onClick={handleSubmit}
                     fullWidth
                 >

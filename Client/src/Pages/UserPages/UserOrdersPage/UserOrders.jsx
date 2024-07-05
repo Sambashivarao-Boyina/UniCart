@@ -45,7 +45,7 @@ export default function UserOrders() {
         {   
             name: 'Thumbnail',
 		    grow: 0,
-		    cell: row => <Link to={`/singleProduct/${row.product._id}`}><img height="84px" width="56px" alt={row.name} src={row.product.thumbnail} />,</Link>,
+		    cell: row => <Link to={`/singleProduct/${row.product._id}`}><img height="84px" width="56px" alt={row.name} src={row.product.thumbnail} /></Link>,
         },
         {
             name:"Product",

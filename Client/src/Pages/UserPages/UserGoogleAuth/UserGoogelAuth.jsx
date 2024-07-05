@@ -83,7 +83,7 @@ export default function UserGoogelAuth() {
                 />{" "}
                 sign in with google
             </Button>
-        
+            
         </>
     )
 }

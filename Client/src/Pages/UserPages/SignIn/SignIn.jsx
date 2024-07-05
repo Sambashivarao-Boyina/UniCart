@@ -146,7 +146,7 @@ export function SignIn() {
                     {errors.password && touched.password  && <div className="mb-2 text-red-500 text-sm">{errors.password}</div>}
 
                 </div>
-                <Button onClick={handleSubmit} color="gray" size="lg" className="mt-6" fullWidth>
+                <Button onClick={handleSubmit}  size="lg" className="mt-6 bg-primary" fullWidth>
                     sign in
                 </Button>
                 
@@ -164,7 +164,19 @@ export function SignIn() {
                     
                 </Typography>
             </form>
-            
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Zoom}
+            />
         </div>
         </section>
     );

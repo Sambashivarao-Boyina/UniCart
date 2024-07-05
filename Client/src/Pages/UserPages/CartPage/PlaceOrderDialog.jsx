@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Button,
     Dialog,
@@ -16,10 +16,11 @@ import axios from "axios";
 
 import {setCart} from "../../../store/userCart/userCartSlice"
 
-export default function PlaceOrderDialog({orderDialog,handleOrderDialog,totalCostOfItems}) {
+export default function PlaceOrderDialog({orderDialog,handleOrderDialog,totalCostOfItems,setPlacingOrder}) {
 
     const {currUser}=useSelector(state=>state.user);
     const {cart}=useSelector(state=>state.userCart);
+    const [loading,setLoading]=useState(false);
 
     const [orderSuccessDialog, setOrderSuccessDialog] = React.useState(false);
     const handleOrderSuccessDialog = () => setOrderSuccessDialog(!orderSuccessDialog);
@@ -34,22 +35,29 @@ export default function PlaceOrderDialog({orderDialog,handleOrderDialog,totalCos
             address:values
         }
 
-        const token=localStorage.getItem("access_token");
+       try{ 
+            setPlacingOrder(true);
+            const token=localStorage.getItem("access_token");
+                
+            const res=await axios.post("http://localhost:8080/order",{
+                orderDetails
+            }, {
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            });
+
+            const data= await res.data;
+            setPlacingOrder(false);
+            dispatch(setCart(data.cart));
+
+            resetForm();
+            handleOrderDialog();
+            handleOrderSuccessDialog();
             
-        const res=await axios.post("http://localhost:8080/order",{
-            orderDetails
-        }, {
-            headers:{
-                Authorization:`Bearer ${token}`
-            }
-        });
-
-        const data= await res.data;
-        dispatch(setCart(data.cart));
-
-        resetForm();
-        handleOrderDialog();
-        handleOrderSuccessDialog();
+        }catch(error){
+            setPlacingOrder(false);
+        }
     }
 
     const {values,errors,touched,isSubmitting,resetForm,handleChange,handleBlur,handleSubmit} = useFormik({
@@ -67,6 +75,8 @@ export default function PlaceOrderDialog({orderDialog,handleOrderDialog,totalCos
         validationSchema:addressSchema,
         onSubmit
     })
+
+    
 
     return (
         <>
@@ -149,8 +159,8 @@ export default function PlaceOrderDialog({orderDialog,handleOrderDialog,totalCos
                 </DialogHeader>
                 <DialogBody>
                     We've received your order and it's now being processed. We'll keep you updated on its progress!
-                    <div>
-                        <svg className='mx-auto mt-2 w-20 h-20 animate-pulse bg-green-700 text-white rounded-full' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <div className='flex items-center justify-center'>
+                        <svg className='mx-auto mt-2 w-20 h-20 animate-pulse text-green-700 rounded-full' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-16">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
 
