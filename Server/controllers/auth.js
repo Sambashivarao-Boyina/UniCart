@@ -53,44 +53,49 @@ module.exports.userSignIn=async (req,res)=>{
     res.status(200).json({user:rest,token,message:"user successfully login",isSuccess:true});
 }
 
-module.exports.refreshToken=async (req,res)=>{
-    const headers=req.headers.authorization;
+
+
+module.exports.refreshToken = async (req, res) => {
+    const headers = req.headers.authorization;
     if (!headers || !headers.startsWith('Bearer ')) {
-        return res.status(404).json({message:"you are not authorized"});
+        return res.status(404).json({ message: "you are not authorized" });
     }
-    const tokenFound=headers.split(" ")[1];
-    
+
+    const tokenFound = headers.split(" ")[1];
+
     let id;
     let person;
-    jwt.verify(tokenFound,process.env.SECEAT_KEY,async (error,data)=>{
-        if(error){
-            return res.json({isSuccess:false});
-        }
-        id=data.id;
-        person=data.person;
-        
-    });
-    if(id){
-        if(person=="User"){
-            const token=jwt.sign({id,person},process.env.SECEAT_KEY,{expiresIn:"7d"});
-            const currUser=await User.findById(id);
-            if(currUser==null){
-                return res.json({isSuccess:false});
-            }
-            const {password,...rest}=currUser._doc;
-            return res.status(200).json({user:rest,token,isSuccess:true});
-        }else if(person=="Seller"){
-            const token=jwt.sign({id,person},process.env.SECEAT_KEY,{expiresIn:"7d"});
-            const currSeller=await Seller.findById(id);
-            if(currSeller==null){
-                return res.json({isSuccess:false});
-            }
-            const {password,...rest}=currSeller._doc;
-            return res.status(200).json({user:rest,token,isSuccess:true});
-        }
+
+    try {
+        const data = jwt.verify(tokenFound, process.env.SECEAT_KEY);
+        id = data.id;
+        person = data.person;
+    } catch (error) {
+        return res.status(401).json({ isSuccess: false, message: "Token verification failed" });
     }
-    res.json({isSuccess:false});
-}
+
+    if (!id) {
+        return res.status(404).json({ isSuccess: false, message: "Invalid token data" });
+    }
+
+    let token;
+    let user;
+
+    if (person === "User") {
+        token = jwt.sign({ id, person }, process.env.SECEAT_KEY, { expiresIn: "7d" });
+        user = await User.findById(id);
+    } else if (person === "Seller") {
+        token = jwt.sign({ id, person }, process.env.SECEAT_KEY, { expiresIn: "7d" });
+        user = await Seller.findById(id);
+    }
+
+    if (!user) {
+        return res.status(404).json({ isSuccess: false, message: "User not found" });
+    }
+
+    const { password, ...rest } = user._doc;
+    res.status(200).json({ user: rest, token, isSuccess: true });
+};
 
 function randomPassword(){
     let s="";
