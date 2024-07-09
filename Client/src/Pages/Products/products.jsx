@@ -106,7 +106,7 @@ export default function Products(){
     const getProductsRequest=async ()=>{
         try{    
             setLoading(true);
-            const res=await axios.get("https://unicart-q0ek.onrender.com/product/allProducts");
+            const res=await axios.get("http://localhost:8080/product/allProducts");
             const data=await res.data;
            
             if(data.isSuccess){
