@@ -55,7 +55,7 @@ module.exports.getCart = async (req,res,next)=>{
     const userID=req.user.id;
     let user;
     try{
-        user=await User.findById(userID).populate({path:"cart.product",select:"title _id brand category price discountPercentage thumbnail actualPrice"});
+        user=await User.findById(userID).populate({path:"cart.product",select:"title _id brand category price discountPercentage thumbnail actualPrice stock"});
     }catch(error){
         next(new ExpressError(404,"user not found"));
     }

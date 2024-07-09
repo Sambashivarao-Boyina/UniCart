@@ -7,7 +7,6 @@ const User=require("../models/user");
 
 module.exports.placeOrder=async (req,res)=>{
     const {orderDetails}=req.body;
-
     const user=await User.findById(req.user.id).populate("cart");
     if(user.cart.length===0){
         return res.status(404).json({isSuccess:false,message:"your cart is empty"});
@@ -39,6 +38,5 @@ module.exports.placeOrder=async (req,res)=>{
     user.cart=[];
     let saveUser=await user.save();
     
-    console.log(saveUser);
     res.status(200).json({isSuccess:true,message:"OrderPlaced",cart:saveUser.cart});
 }
