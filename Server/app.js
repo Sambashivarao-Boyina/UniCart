@@ -32,7 +32,7 @@ main()
 
 
 app.use(cors({
-    origin:"http://localhost:5173"
+    origin:"https://unicart-q0ek.onrender.com"
 }));
 app.use(express.json())
 
