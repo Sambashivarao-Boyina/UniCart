@@ -10,7 +10,7 @@ const envPath = path.resolve(__dirname, '..', '.env');
 const result = dotenv.config({ path: envPath });
 
 async function main() {
-    await mongoose.connect(process.env.DB_Url);
+    await mongoose.connect(process.env.DATABASE_URL);
 }
   
 main()
@@ -30,11 +30,11 @@ async function initDatabase(){
     let products=await fetchProducts();
     products=products.map(product=>{
         let {id,dimensions,shippingInformation,availabilityStatus,reviews,minimumOrderQuantity,meta,...rest}=product;
-        rest={...rest,seller:"6683e2b68d15fe56ebf2ccbf"};
+        rest={...rest,seller:"668d398986555561f13c2f5f"};
         return rest;
     })
     let count=0;
-    const seller=await Seller.findById("6683e2b68d15fe56ebf2ccbf");
+    const seller=await Seller.findById("668d398986555561f13c2f5f");
     for(let i=products.length-1;i>=0;i--){
         try{
             const product=new Product({...products[i],reviews:[]});

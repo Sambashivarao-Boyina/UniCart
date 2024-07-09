@@ -13,6 +13,7 @@ import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Link} from "react-router-dom"; 
 import UserGoogelAuth from "../UserGoogleAuth/UserGoogelAuth";
+import { setCart } from "../../../store/userCart/userCartSlice";
 
 export function SignUp() {
     const [passwordShown, setPasswordShown] = useState(false);
@@ -31,7 +32,7 @@ export function SignUp() {
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.user));
                 dispatch(setCart(data.user.cart));
-                navigate("/");
+                navigate("/products");
             }else{
                 toast.error(error.response.data.message, {
                     position: "top-center",
