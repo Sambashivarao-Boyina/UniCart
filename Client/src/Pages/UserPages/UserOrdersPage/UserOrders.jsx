@@ -49,7 +49,7 @@ export default function UserOrders() {
         },
         {
             name:"Product",
-            cell: row => <Link to={`/products/${row.product._id}`}><p className='max-w-40 truncate'>{row.product.title}</p></Link>,
+            cell: row => <Link to={`/products/${row.product._id}`}><p className='max-w-20 truncate'>{row.product.title}</p></Link>,
 
         },
         {
@@ -60,10 +60,14 @@ export default function UserOrders() {
         {
             name:"Ordered Date",
             cell:row=><p>{row.orderedDate.substring(0,10)}</p>,
+            selector:row=>row.noOfItems,
+            sortable:true
         }, 
         {
             name:"Total Cost",
             cell:row=><p>${(row.product.actualPrice * row.noOfItems).toFixed(2)}</p>,
+            selector:row=>row.product.actualPrice * row.noOfItems,
+            sortable:true
         }, 
         {
             name:"OrderStatus",

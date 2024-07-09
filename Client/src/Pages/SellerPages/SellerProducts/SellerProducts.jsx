@@ -6,6 +6,9 @@ import SellerProduct from './SellerProduct';
 import { Typography } from '@material-tailwind/react';
 import {Link} from "react-router-dom";
 import Filters from '../../Products/Filters';
+import {
+    MagnifyingGlassIcon
+} from "@heroicons/react/24/solid"
 
 export default function SellerProducts() {
     const [products,setProducts]=useState([]);
@@ -91,15 +94,47 @@ export default function SellerProducts() {
         }
     }
 
+      //searchValue;
+      const [search,setSearch]=useState("");
+
+      function normalizeString(str) {
+        str=str.replace("-","");
+        return str.replace(/\s+/g, '').toLowerCase();
+    }
+    
+
+    const handleSearchBtn=()=>{
+        if(search.length>0){
+            let set=new Set();
+            for(let i=0;i<dataBaseProducts.length;i++){
+                if(normalizeString(dataBaseProducts[i].title).includes(normalizeString(search))){
+                    set.add(dataBaseProducts[i]);
+                }
+            }
+            for(let i=0;i<dataBaseProducts.length;i++){
+                if(normalizeString(dataBaseProducts[i].category).includes(normalizeString(search))){
+                    set.add(dataBaseProducts[i]);
+                }
+            }
+            setProducts([...set]);
+            setSearch("");
+        }else{
+            setProducts(dataBaseProducts);
+        }
+
+    }
+  
+  
+
     if(loading){
         let arr=[1,2,3,4,4,5,6,7,8,9,10];
         return (
             <>
                 <div className="w-full py-4 px-auto flex flex-row gap-4 items-center  flex-wrap justify-evenly">
                     {
-                        arr.map((item)=>{
+                        arr.map((item,idx)=>{
                             return (
-                                <div className="flex animate-pulse flex-col items-center gap-8">
+                                <div key={idx} className="flex animate-pulse flex-col items-center gap-8">
                                     <div className="grid h-40 w-40 place-items-center rounded-lg bg-gray-300">
                                         <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -165,18 +200,30 @@ export default function SellerProducts() {
 
     return (
         <>
-             <div className='w-full flex items-center '>
-                <div className="breadcrumbs text-sm lg:ml-20 ">
+             <div className='w-full flex items-center mt-2'>
+                <div className="hidden sm:block  breadcrumbs text-sm lg:ml-20 lg:-mb-4 ">
                     <ul className='lg:text-lg'>
                         <li></li>
                         <li><Link to={"/products"}>Home</Link></li>
                         <li><Link to={"/seller/myproducts"}>MyProducts</Link></li>
                     </ul>
-
                 </div>
-                <button className='btn-primary btn my-2 ml-auto text-white text-lg mr-4' onClick={openDrawer}>Filters</button>
+                <div className='flex items-center justify-center my-2 ml-auto gap-2'>
+                    <div className='flex flex-row'>
+                        <input
+                        type="text"
+                        placeholder="Search here"
+                        value={search}
+                        onChange={(event)=>setSearch(event.target.value)}
+                        className="input input-bordered rounded-r-none input-primary w-full max-w-xs" />
+                        <button onClick={handleSearchBtn} className='btn btn-primary rounded-l-none text-whiet'>
+                            <MagnifyingGlassIcon className="h-6 w-6  text-white"/>
+                        </button>
+                    </div>
+                    <button className='btn-primary btn  text-white text-lg mr-4' onClick={openDrawer}>Filters</button>
+                </div>
 
-             </div>
+            </div>
             <div className="w-full py-4 px-auto flex flex-row  items-center  flex-wrap justify-evenly">
                 {
                     products && products.length ?

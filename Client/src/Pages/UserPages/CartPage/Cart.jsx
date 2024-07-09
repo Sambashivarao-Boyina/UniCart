@@ -244,9 +244,9 @@ export default function Cart() {
         return (
             <div className="px-4 sm:px-4 md:px-6 lg:px-8 max-w-[900px] md:mx-auto mt-8 flex flex-row gap-4 items-center mx-2  flex-wrap justify-evenly">
                 {
-                    arr.map((item)=>{
+                    arr.map((item,idx)=>{
                         return (
-                            <div className="w-full min-w-[315px] flex animate-pulse flex-row items-center gap-8">
+                            <div key={idx} className="w-full min-w-[315px] flex animate-pulse flex-row items-center gap-8">
                                 <div className="grid h-20 w-40 place-items-center rounded-lg bg-gray-300">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -318,15 +318,15 @@ export default function Cart() {
                     <li><Link to={"/cart"}>Cart</Link></li>
                 </ul>
             </div>
-            <div className='flex flex-col items-center px-3 sm:px-4 md:px-6 lg:px-8 max-w-[900px] md:mx-auto  py-6 w-full '>
+            <div className='flex flex-col items-center px-3 sm:px-4 md:px-6 lg:px-8 max-w-[900px] mx-auto  py-6 w-full '>
                 
                 <p className="text-3xl self-start sm:text-4xl font-bold">Shopping Cart</p>
                 <p className="text-lg self-start sm:text-xl font-bold">you have {cart.length} items in your cart</p>
-                <div className="w-full flex items-center flex-wrap gap-4 mx-auto">
+                <div className="w-full flex flex-col items-center  gap-4 mx-auto">
                     {
                         cartItems && cartItems.length ?
                             cartItems.map((item,idx)=>
-                                <div key={idx}><CartItem item={item} /></div>
+                                <div key={item.product._id} className='w-full'><CartItem item={item} /></div>
                             )
                         :null
                     }

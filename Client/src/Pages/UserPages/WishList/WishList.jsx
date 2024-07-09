@@ -51,9 +51,9 @@ export default function WishList() {
         return (
             <div className="w-screen py-4 px-auto flex flex-row gap-4 items-center  flex-wrap justify-evenly">
                 {
-                    arr.map((item)=>{
+                    arr.map((item,idx)=>{
                         return (
-                            <div className="flex animate-pulse flex-col items-center gap-8">
+                            <div key={idx} className="flex animate-pulse flex-col items-center gap-8">
                                 <div className="grid h-40 w-40 place-items-center rounded-lg bg-gray-300">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"

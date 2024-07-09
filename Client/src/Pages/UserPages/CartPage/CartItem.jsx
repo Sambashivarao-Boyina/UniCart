@@ -239,12 +239,12 @@ export default function CartItem({item}) {
                     </DialogFooter>
                 </Dialog>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-between w-full gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between w-full gap-2">
                 <div className=" flex items-center lg:justify-start justify-evenly">
                     <div className="h-[50px] w-[50px]  sm:h-[100px] sm:w-[150px] ">
                         <Link to={`/products/${item.product._id}`}><img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" /></Link>
                     </div>
-                    <div>
+                    <div className="mr-2">
                         <p className="truncate text-md sm:text-xl font-bold max-w-40 sm:max-w-60">{item.product.title}</p>
                         <p>{item.product.brand}</p>
                     </div>
