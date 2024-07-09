@@ -7,6 +7,7 @@ import CartItem from "./CartItem"
 import {useSelector} from "react-redux";
 import {Typography} from "@material-tailwind/react"
 import "./PlaceOrderDialog.css";
+import {Link} from "react-router-dom";
 
 import {
     Button,
@@ -20,6 +21,7 @@ import {
 } from "@material-tailwind/react";
 import PlaceOrderDialog from './PlaceOrderDialog';
 import { FastField } from 'formik';
+
 
 export default function Cart() {
 
@@ -101,7 +103,7 @@ export default function Cart() {
 
     if(placingOrder){
         return (
-            <div className='w-screen h-screen flex items-center justify-center '>
+            <div className='w-full h-screen flex items-center justify-center '>
                 <div className="loader flex flex-col items-center ">
                     <p className='text-xl lg:text-2xl font-semibold'>Placing your order</p>
                     <div class="truckWrapper">
@@ -308,15 +310,23 @@ export default function Cart() {
     }
 
     return (
-        <>
+        <>  
+            <div className="breadcrumbs text-sm lg:ml-20 ">
+                <ul className='lg:text-lg'>
+                    <li></li>
+                    <li><Link to={"/products"}>Home</Link></li>
+                    <li><Link to={"/cart"}>Cart</Link></li>
+                </ul>
+            </div>
             <div className='flex flex-col items-center px-3 sm:px-4 md:px-6 lg:px-8 max-w-[900px] md:mx-auto  py-6 w-full '>
+                
                 <p className="text-3xl self-start sm:text-4xl font-bold">Shopping Cart</p>
                 <p className="text-lg self-start sm:text-xl font-bold">you have {cart.length} items in your cart</p>
                 <div className="w-full flex items-center flex-wrap gap-4 mx-auto">
                     {
                         cartItems && cartItems.length ?
                             cartItems.map((item,idx)=>
-                                <CartItem item={item} key={idx}/>
+                                <div key={idx}><CartItem item={item} /></div>
                             )
                         :null
                     }

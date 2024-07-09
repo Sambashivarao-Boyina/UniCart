@@ -45,12 +45,12 @@ export default function UserOrders() {
         {   
             name: 'Thumbnail',
 		    grow: 0,
-		    cell: row => <Link to={`/singleProduct/${row.product._id}`}><img height="84px" width="56px" alt={row.name} src={row.product.thumbnail} /></Link>,
+		    cell: row => <Link to={`/products/${row.product._id}`}><img height="84px" width="56px" alt={row.name} src={row.product.thumbnail} /></Link>,
         },
         {
             name:"Product",
-            selector:row=>row.product.title,
-            sortable:true,
+            cell: row => <Link to={`/products/${row.product._id}`}><p className='max-w-40 truncate'>{row.product.title}</p></Link>,
+
         },
         {
             name:"Count",
@@ -60,12 +60,10 @@ export default function UserOrders() {
         {
             name:"Ordered Date",
             cell:row=><p>{row.orderedDate.substring(0,10)}</p>,
-            sortable:true,
         }, 
         {
             name:"Total Cost",
             cell:row=><p>${(row.product.actualPrice * row.noOfItems).toFixed(2)}</p>,
-            sortable:true
         }, 
         {
             name:"OrderStatus",
@@ -115,10 +113,21 @@ export default function UserOrders() {
         },
     ]
 
-    return <OrdersTable 
+    return (
+        <>
+            <div className="breadcrumbs text-sm -mb-8 lg:ml-20 ">
+                <ul className='lg:text-lg'>
+                    <li></li>
+                    <li><Link to={"/products"}>Home</Link></li>
+                    <li><Link to={"/user/orders"}>Orders</Link></li>
+                </ul>
+            </div>
+            <OrdersTable 
                 
                 columns={columns}  
                 data={orders}
                 pending={loading}
             />;
+        </>
+    )
 }

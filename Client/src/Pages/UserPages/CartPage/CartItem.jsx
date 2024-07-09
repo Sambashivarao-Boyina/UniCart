@@ -27,6 +27,7 @@ import {Link} from "react-router-dom";
 
 export default function CartItem({item}) {
 
+
     //Remove from Cart dialog box
     const [removeCartOpen, setRemoveCartOpen] = React.useState(false);
     const handleRemoveCartOpen = () => setRemoveCartOpen(!removeCartOpen);
@@ -218,7 +219,7 @@ export default function CartItem({item}) {
                         </ul>
                         <p className="bold">New Quantity:</p>
                         <div className="w-72 mt-4">
-                            <ItemCartCount cartCount={cartCount} setCartCount={setCartCount}/>
+                            <ItemCartCount cartCount={cartCount} setCartCount={setCartCount} maxCount={item.product.stock}/>
                             {/* <Input type="number" label="Cart Count" value={cartCount} onChange={handleCartCountChange} min={1}/> */}
                         </div>
                         
@@ -241,7 +242,7 @@ export default function CartItem({item}) {
             <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-between w-full gap-2">
                 <div className=" flex items-center lg:justify-start justify-evenly">
                     <div className="h-[50px] w-[50px]  sm:h-[100px] sm:w-[150px] ">
-                        <Link to={`/singleProduct/${item.product._id}`}><img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" /></Link>
+                        <Link to={`/products/${item.product._id}`}><img src={item.product.thumbnail} className="object-contain  h-full rounded-lg mx-auto" /></Link>
                     </div>
                     <div>
                         <p className="truncate text-md sm:text-xl font-bold max-w-40 sm:max-w-60">{item.product.title}</p>

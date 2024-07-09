@@ -132,12 +132,12 @@ export default function SellerProduct({product,setProducts}) {
 
     return (
         <div>
-            <div className="w-80 sm:w-96 bg-white flex flex-col border p-2 border-gray-100 bg-red  m-4  rounded-lg hover:scale-110 duration-300 shadow-md hover:shadow-xl">
+            <div className="w-80 sm:w-96 bg-[#eceaf4] flex flex-col border p-2 border-gray-100 bg-red  m-4  rounded-lg hover:scale-110 duration-300 shadow-md hover:shadow-xl">
                 <svg onClick={handleOpen} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-green-800 ml-auto cursor-pointer">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                 </svg>
 
-                <Link to={`/singleProduct/${product._id}`}>
+                <Link to={`/products/${product._id}`}>
                     <div className=" h-48 flex flex-row items-center justify-center">
                         <img src={product.thumbnail} className="object-cover object-cente h-full overflow-hidden  pb-2 rounded-t-lg " alt={product.title} /> 
                     </div>

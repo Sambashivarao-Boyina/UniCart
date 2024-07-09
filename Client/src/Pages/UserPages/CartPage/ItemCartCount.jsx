@@ -9,9 +9,9 @@ export default function ItemCartCount({cartCount,setCartCount,maxCount}) {
         }
     }
 
-    const handleCartIncrease = (event)=>{
+    const handleCartIncrease = ()=>{
         setCartCount((curr)=>{
-            if(curr<10 && event.target.value<=maxCount){
+            if(curr<10 && curr<=maxCount){
                 return curr+1;
             }else{
                 return curr;

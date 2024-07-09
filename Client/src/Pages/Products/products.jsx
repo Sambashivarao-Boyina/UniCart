@@ -4,12 +4,78 @@ import Product from './Product';
 import { Link } from 'react-router-dom';
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Typography } from '@material-tailwind/react';
+import { 
+    Typography, 
+} from '@material-tailwind/react';
+
+import Filters from './Filters';
+
+
 
 
 export default function Products(){
     const [products,setProducts]=useState([]);
     const [loading,setLoading]=useState(false);
+
+    const [dataBaseProducts,setDatabaseProducts]=useState([]);
+
+    useEffect(()=>{
+        setProducts(dataBaseProducts);
+    },[dataBaseProducts])
+
+    //Drawer states
+    const [open, setOpen] = React.useState(false);
+    const openDrawer = () => setOpen(true);
+    const closeDrawer = () => setOpen(false);
+
+    const [list,setList]=useState(false);
+    const handleList = (value) => {
+        setList(list === value ? 0 : value);
+    };
+
+
+    //setPrice Filters
+    const [lowestPrice,setLowestPrice]=useState(0);
+    const [highestPrice,setHighestPrice]=useState(0);
+    
+    useEffect(()=>{
+        getMinPrice();
+        getMaxPrice();
+    },[dataBaseProducts]);
+
+    const getMinPrice=()=>{
+        if(products && products.length>0){
+            let min=products[0].actualPrice;
+            for(let i=0;i<products.length;i++){
+                min=Math.min(min,products[i].actualPrice);
+            }
+            setLowestPrice(min);
+        }
+    }
+
+    const getMaxPrice=()=>{
+        if(products && products.length>0){
+            let max=products[0].actualPrice;
+            for(let i=0;i<products.length;i++){
+                max=Math.max(max,products[i].actualPrice);
+            }
+            setHighestPrice(max);
+        }
+    }
+
+    const [minPrice,setMinPrice]=useState(null);
+    const [maxPrice,setMaxPrice]=useState(highestPrice);
+
+   
+
+
+  
+
+
+   
+
+   
+
     useEffect(()=>{
         getProductsRequest(); 
     },[]);
@@ -21,6 +87,7 @@ export default function Products(){
             const data=await res.data;
            
             if(data.isSuccess){
+                setDatabaseProducts(data.products);
                 setProducts(data.products);
             }else{
                 toast.error(data?.message, {
@@ -51,6 +118,7 @@ export default function Products(){
             setLoading(false);
         }
     }
+
 
     
 
@@ -124,14 +192,23 @@ export default function Products(){
         )
     }
 
-
     return (
         <>
-            <div className="w-screen py-4 flex flex-row items-center flex-wrap gap-4 lg:gap-6  justify-evenly ">
+            <div className='w-full flex items-center'>
+                <div className="breadcrumbs text-sm lg:ml-20 lg:-mb-4 ">
+                    <ul className='lg:text-lg'>
+                        <li></li>
+                        <li><Link to={"/products"}>Home</Link></li>
+                    </ul>
+                </div>
+                <button className='btn-primary btn my-2 ml-auto text-white text-lg mr-4' onClick={openDrawer}>Filters</button>
+            </div>
+            
+            <div className="w-full py-4 flex flex-row items-center flex-wrap gap-4 lg:gap-6  justify-evenly ">
                 {
                     products && products.length ?
                     products.map((item)=><div key={item._id} ><Product product={item}/></div>)
-                    :null
+                    :<p className='mx-auto'>There are no Products fount for you search</p>
                 }
             </div>
             <ToastContainer
@@ -147,6 +224,13 @@ export default function Products(){
                 theme="light"
                 transition={Zoom}
             />
+
+            {
+                products && lowestPrice && highestPrice ?
+                    <Filters open={open} closeDrawer={closeDrawer} list={list} setList={setList} handleList={handleList} setProducts={setProducts} products={products} setDatabaseProducts={setDatabaseProducts} dataBaseProducts={dataBaseProducts} lowestPrice={lowestPrice} highestPrice={highestPrice}/>
+                :null
+            }
+            
         </>
     )
 }

@@ -24,6 +24,7 @@ import UserRoute from './PrivateRoutes/UserRoute'
 import UserOrders from './Pages/UserPages/UserOrdersPage/UserOrders'
 import WishList from './Pages/UserPages/WishList/WishList'
 import SellerProducts from './Pages/SellerPages/SellerProducts/SellerProducts'
+import PageNotFound from './Pages/PageNotFound/PageNotFound'
 
 
 function App() {
@@ -58,7 +59,7 @@ function App() {
             <Routes>
                 <Route  path="/" element={<Products/>}/>
                 <Route  path="/products" element={<Products/>}/>
-                <Route  path="/singleProduct/:productId" element={<SingleProduct/>}/>
+                <Route  path="/products/:productId" element={<SingleProduct/>}/>
                 <Route  path="/sign-up" element={<SignUp/>}/>
                 <Route  path="/sign-in" element={<SignIn/>}/>
                 <Route  path="/seller/sign-up" element={<SellerSignUp/>}/>
@@ -77,6 +78,7 @@ function App() {
                 </Route>
                 {/* <Route path="/authentication" element={<Authentication/>}/> */}
 
+                <Route path="*" element={<PageNotFound/>}/>
             </Routes>       
         </>
     )

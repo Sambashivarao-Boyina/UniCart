@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {signInFaliure,signSuccess,signInStart} from "../../../store/user/userSlice"
+import {setCart} from "../../../store/userCart/userCartSlice";
 import { useNavigate } from 'react-router-dom';
 
 export default function UserGoogelAuth() {
@@ -38,7 +39,7 @@ export default function UserGoogelAuth() {
                 localStorage.setItem("access_token",data.token);
                 dispatch(signSuccess(data.user));
                 dispatch(setCart(data.user.cart));
-                navigate("/products");
+                navigate("/");
             }else{
                 toast.error(error?.response?.data?.message, {
                     position: "top-center",
@@ -52,6 +53,7 @@ export default function UserGoogelAuth() {
                     transition: Zoom,
                 });
             }
+            
         }catch(error){
             toast.error(error?.response?.data?.message, {
                 position: "top-center",

@@ -45,13 +45,6 @@ export default function SingleProduct(){
     },[]);
 
     
-
-    const handleCountChange=(event)=>{
-        setCount(event.target.value);
-        event.target.value=1;
-    }
-
-    
     const addToCart=async ()=>{
         try{
 
@@ -187,6 +180,13 @@ export default function SingleProduct(){
     
     return (
         <div className=" flex flex-col pb-10   lg:pb-20 min-h-screen lg:pt-10 pt-2 lg:w-[90%] mx-auto">
+            <div className="breadcrumbs text-sm lg:ml-20 ">
+                <ul className='lg:text-lg'>
+                    <li></li>
+                    <li><Link to={"/products"}>Home</Link></li>
+                    {product && <li><Link to={`/products/${product._id}`}>{product.title}</Link></li>}
+                </ul>
+            </div>
             <div className="w-full flex flex-col lg:flex-row  items-center   ">
                 {
                     product && product.images && product.images.length ?

@@ -4,6 +4,7 @@ import WishListItem from './WishListItem';
 import {Typography} from "@material-tailwind/react"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Link} from "react-router-dom";
 
 export default function WishList() {
     const [wishlist,setWishlist]=useState([]);
@@ -118,7 +119,14 @@ export default function WishList() {
 
     return (
         <>
-            <div className='w-screen py-4  flex flex-row items-center  flex-wrap justify-evenly'>
+            <div className="breadcrumbs text-sm lg:ml-20 ">
+                <ul className='lg:text-lg'>
+                    <li></li>
+                    <li><Link to={"/products"}>Home</Link></li>
+                    <li><Link to={"/user/wishlist"}>Wishlist</Link></li>
+                </ul>
+            </div>
+            <div className='w-full py-4  flex flex-row items-center  flex-wrap justify-evenly'>
                 {
                     wishlist && wishlist.length ?
                         wishlist.map((wishlistItem)=><div className='' key={wishlistItem._id}><WishListItem wishlistItem={wishlistItem}/></div>)
