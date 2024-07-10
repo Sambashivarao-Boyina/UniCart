@@ -215,7 +215,7 @@ export default function SellerProducts() {
                         placeholder="Search here"
                         value={search}
                         onChange={(event)=>setSearch(event.target.value)}
-                        className=" outline-[#4A00FF]   rounded-l-lg border-[#4A00FF] border-2 rounded-r-none p-2  w-full max-w-xs" />
+                        className=" outline-[#4A00FF]  ml-2  rounded-l-lg border-[#4A00FF] border-2 rounded-r-none p-2  w-full max-w-xs" />
                         <button onClick={handleSearchBtn} className='btn btn-primary rounded-l-none text-whiet'>
                             <MagnifyingGlassIcon className="h-6 w-6  text-white"/>
                         </button>
