@@ -21,7 +21,7 @@ const seller=require("./routes/seller");
 const review=require("./routes/review");
 
 async function main() {
-  await mongoose.connect(process.env.DB_Url);
+  await mongoose.connect(process.env.DATABASE_URL);
 }
 
 main()
