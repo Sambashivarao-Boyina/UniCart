@@ -1,6 +1,6 @@
 # UniCart
 
-UniCart is an e-commerce website built using the MERN Stack. It allows users to browse, review, and purchase products, while sellers can create, edit, and manage their products and orders. The project utilizes Firebase for authentication and cloud storage for images.
+UniCart is an e-commerce website built using the MERN Stack. It allows users to browse, review, and purchase products, while sellers can create, edit, and manage their products and orders. The project utilizes Firebase  cloud storage for images.
 
 ## Features
 
@@ -33,7 +33,7 @@ UniCart is an e-commerce website built using the MERN Stack. It allows users to 
 - **MongoDB**: NoSQL database.
 
 ### Additional Tools
-- **Firebase**: Authentication and cloud storage for images.
+- **Firebase**: cloud storage for images.
 
 ## Hosted URL
 [UniCart](https://unicart-q0ek.onrender.com/)
