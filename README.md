@@ -52,43 +52,28 @@ UniCart is an e-commerce website built using the MERN Stack. It allows users to 
 
 3. Install frontend dependencies:
     ```bash
-    cd frontend
+    cd Client
     npm install
     ```
 
 4. Install backend dependencies:
     ```bash
-    cd ../backend
+    cd ../Server
     npm install
     ```
 
 ## Usage
 
-### Development
-
-1. Start the backend server:
-    ```bash
-    cd backend
-    npm start
-    ```
-
-2. Start the frontend development server:
-    ```bash
-    cd ../frontend
-    npm start
-    ```
-
-### Production
 
 1. Build the frontend:
     ```bash
-    cd frontend
+    cd Client
     npm run build
     ```
 
 2. Serve the frontend:
     ```bash
-    cd ../backend
+    cd ../Server
     node app.js
     ```
 
