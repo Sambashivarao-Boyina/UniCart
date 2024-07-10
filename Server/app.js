@@ -4,13 +4,15 @@ const dotenv=require("dotenv");
 const mongoose = require('mongoose');
 const ExpressError = require("./util/ExpressError");
 const cors=require("cors");
+const path=require("path");
 
 
 if(process.env!=="production"){
     dotenv.config();
 }
 
-app.use(express.static("dist"));
+app.use(express.static(path.join(__dirname,"/dist")));
+
 
 //Routes
 const productRoute=require("./routes/product");
@@ -49,6 +51,12 @@ app.use("/api/user",user);
 app.use("/api/order",order);
 app.use("/api/seller",seller);
 app.use("/api/review",review);
+
+
+//client rendering
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"/dist/index.html"));
+})
 
 
 

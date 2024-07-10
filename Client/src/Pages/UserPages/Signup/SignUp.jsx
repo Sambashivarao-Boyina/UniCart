@@ -182,7 +182,9 @@ export function SignUp() {
                         sign up
                     </Button>
                     
-                    <UserGoogelAuth/>
+                    {/* <UserGoogelAuth/> */}
+
+                    
                     <Typography
                         variant="small"
                         color="gray"

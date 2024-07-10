@@ -180,7 +180,8 @@ export function SellerSignUp() {
                         sign up
                     </Button>
                     
-                    <SellerGoogelAuth/>
+                    {/* <SellerGoogelAuth/> */}
+
                     <Typography
                         variant="small"
                         color="gray"

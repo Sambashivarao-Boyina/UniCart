@@ -156,7 +156,9 @@ export function SignIn() {
                     <Button onClick={handleSubmit} disabled={isSubmitting} size="lg" className="mt-6 bg-[#4A00FF]" fullWidth>
                         sign in
                     </Button>
-                    <SellerGoogelAuth/>
+
+                    {/* <SellerGoogelAuth/> */}
+
                     <Typography
                         variant="small"
                         color="gray"

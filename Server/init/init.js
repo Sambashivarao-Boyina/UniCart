@@ -30,11 +30,11 @@ async function initDatabase(){
     let products=await fetchProducts();
     products=products.map(product=>{
         let {id,dimensions,shippingInformation,availabilityStatus,reviews,minimumOrderQuantity,meta,...rest}=product;
-        rest={...rest,seller:"668d398986555561f13c2f5f"};
+        rest={...rest,seller:"668ebd40fb3a34f8f60667b1"};
         return rest;
     })
     let count=0;
-    const seller=await Seller.findById("668d398986555561f13c2f5f");
+    const seller=await Seller.findById("668ebd40fb3a34f8f60667b1");
     for(let i=products.length-1;i>=0;i--){
         try{
             const product=new Product({...products[i],reviews:[]});

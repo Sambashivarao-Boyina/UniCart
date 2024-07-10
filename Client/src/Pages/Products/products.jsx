@@ -245,7 +245,7 @@ export default function Products(){
                 {
                     products && products.length ?
                     products.map((item)=><div key={item._id} ><Product product={item}/></div>)
-                    :<p className='mx-auto'>There are no Products fount for you search</p>
+                    :<p className='mx-auto'>There are no Products found for you search</p>
                 }
             </div>
             <ToastContainer
