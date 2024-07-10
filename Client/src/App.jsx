@@ -54,9 +54,9 @@ function App() {
     },[])
 
     return (
-        <>
+        <div className='bg-white'>
             <ComplexNavbar/>
-            <Routes>
+            <Routes >
                 <Route  path="/" element={<Products/>}/>
                 <Route  path="/products" element={<Products/>}/>
                 <Route  path="/products/:productId" element={<SingleProduct/>}/>
@@ -80,7 +80,7 @@ function App() {
 
                 <Route path="*" element={<PageNotFound/>}/>
             </Routes>       
-        </>
+        </div>
     )
 }
 
