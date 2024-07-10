@@ -37,6 +37,7 @@ app.use(cors({
 app.use(express.json())
 
 
+
 app.get("/",(req,res)=>{
     res.json({message:"Welcome EconNest"});
 })
@@ -47,6 +48,7 @@ app.use("/user",user);
 app.use("/order",order);
 app.use("/seller",seller);
 app.use("/review",review);
+
 
 
 app.get("*",(req,res,next)=>{
