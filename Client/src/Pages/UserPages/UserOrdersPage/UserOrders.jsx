@@ -19,7 +19,7 @@ export default function UserOrders() {
         const token=localStorage.getItem("access_token");
         setLoading(true);
         try{
-            const res=await axios.get("http://localhost:8080/user/orders",{
+            const res=await axios.get("/api/user/orders",{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

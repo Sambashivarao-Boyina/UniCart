@@ -9,7 +9,7 @@ import SignUp from './Pages/UserPages/Signup/SignUp'
 import SignIn from './Pages/UserPages/SignIn/SignIn'
 import axios from "axios";
 import {useSelector,useDispatch} from "react-redux"
-import {signSuccess} from "../src/store/user/userSlice"
+import {signSuccess} from "./store/user/userSlice"
 import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SignInRoute from './PrivateRoutes/SignInRoute'
@@ -17,7 +17,7 @@ import { Authentication } from './Pages/Authetication/Authentication'
 import SellerSignUp from './Pages/SellerPages/SellerSignUp/SellerSignUp'
 import SellerSignIn from './Pages/SellerPages/SellerSignIn/SellerSignIn'
 import SellerRoute from './PrivateRoutes/SellerRoute'
-import {setCart} from "../src/store/userCart/userCartSlice"
+import {setCart} from "./store/userCart/userCartSlice"
 import Cart from './Pages/UserPages/CartPage/Cart'
 import SellerOrders from './Pages/SellerPages/SellerOrders/SellerOrders'
 import UserRoute from './PrivateRoutes/UserRoute'
@@ -32,7 +32,7 @@ function App() {
     const refresh=async ()=>{
         const token=localStorage.getItem("access_token");
         try{
-            const res=await axios.get("http://localhost:8080/auth/refreshToken",{
+            const res=await axios.get("/api/auth/refreshToken",{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

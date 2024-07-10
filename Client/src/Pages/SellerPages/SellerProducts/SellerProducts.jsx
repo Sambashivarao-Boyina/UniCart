@@ -68,7 +68,7 @@ export default function SellerProducts() {
         try{
             setLoading(true);
             const token=localStorage.getItem("access_token");
-            const res=await axios.get("http://localhost:8080/seller/myproducts",{
+            const res=await axios.get("/api/seller/myproducts",{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

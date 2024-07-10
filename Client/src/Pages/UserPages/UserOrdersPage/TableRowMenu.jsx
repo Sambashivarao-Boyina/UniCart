@@ -38,7 +38,7 @@ export default function TableRowMenu({orderID,setOrders}) {
         try{
                         
             const token=localStorage.getItem("access_token");
-            const res=await axios.delete(`http://localhost:8080/user/orders/${orderID}`,{
+            const res=await axios.delete(`/api/user/orders/${orderID}`,{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

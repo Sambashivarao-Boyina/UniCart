@@ -84,7 +84,7 @@ export default function AddProduct(){
         console.log("start requesting");
         try{
           
-            const res=await axios.post("http://localhost:8080/product/",{product},{
+            const res=await axios.post("/api/product/",{product},{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -133,7 +133,6 @@ export default function AddProduct(){
     }
 
     const uploadFileAsync = async (uploadTask) => {
-        console.log("fileuplaoding");
         try {
           const progressPromise = new Promise((resolve, reject) => {
             uploadTask.on(

@@ -52,7 +52,7 @@ export default function SingleProduct(){
                 product:productId,
                 count,
             }
-            const res=await axios.put("http://localhost:8080/user/addToCart",{
+            const res=await axios.put("/api/user/addToCart",{
                 item
             },
             {
@@ -106,7 +106,7 @@ export default function SingleProduct(){
 
     const removeFromCart=async ()=>{
         try{
-            const res=await axios.put(`http://localhost:8080/user/removeFromCart/${productId}`,
+            const res=await axios.put(`/api/user/removeFromCart/${productId}`,
             {},
             {
                 headers:{
@@ -159,7 +159,7 @@ export default function SingleProduct(){
 
     const getProduct=async ()=>{
         try{
-            const res=await axios.get(`http://localhost:8080/product/${productId}`);
+            const res=await axios.get(`/api/product/${productId}`);
             const data=await res.data;
             setProduct(data.product);
             setLoading(false);

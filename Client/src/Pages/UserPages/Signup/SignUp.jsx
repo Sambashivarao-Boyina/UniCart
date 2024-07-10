@@ -26,7 +26,7 @@ export function SignUp() {
         const user=values;
         try{
             dispatch(signInStart());
-            const res=await axios.post("http://localhost:8080/auth/user-signup",{user});
+            const res=await axios.post("/api/auth/user-signup",{user});
             const data=await res.data;
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);

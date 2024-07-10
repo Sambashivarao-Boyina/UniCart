@@ -19,7 +19,7 @@ export default function CommentSection({productId}) {
     const getReviews=async ()=>{
         setLoading(true);
         try{
-            const res=await axios.get(`http://localhost:8080/review/${productId}`);
+            const res=await axios.get(`/api/review/${productId}`);
             const data=await res.data;
             setReviews(data.reviews);
             setLoading(false);
@@ -37,7 +37,7 @@ export default function CommentSection({productId}) {
     const sendReview = async (req,res)=>{
         try{
             const token=localStorage.getItem("access_token");
-            const res=await axios.post("http://localhost:8080/review",{
+            const res=await axios.post("/api/review",{
                 rating,
                 comment,
                 productID:productId,

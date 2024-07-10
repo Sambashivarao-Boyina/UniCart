@@ -25,7 +25,7 @@ export function SignIn() {
         const seller=values;
         try{
             dispatch(signInStart());
-            const res=await axios.post("http://localhost:8080/auth/seller-signin",{email:seller.email,password:seller.password});
+            const res=await axios.post("/api/auth/seller-signin",{email:seller.email,password:seller.password});
             const data=await res.data;
            
             if(data.isSuccess){

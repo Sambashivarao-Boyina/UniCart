@@ -20,7 +20,7 @@ export default function WishList() {
         try{
             setLoading(true);
             const token=localStorage.getItem("access_token");
-            const res=await axios.get("http://localhost:8080/user/wishlist",{
+            const res=await axios.get("/api/user/wishlist",{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

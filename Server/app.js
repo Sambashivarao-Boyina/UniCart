@@ -10,6 +10,8 @@ if(process.env!=="production"){
     dotenv.config();
 }
 
+app.use(express.static("dist"));
+
 //Routes
 const productRoute=require("./routes/product");
 const auth=require("./routes/auth");
@@ -31,9 +33,8 @@ main()
 
 
 
-app.use(cors({
-    origin:"http://localhost:5173"
-}));
+
+
 app.use(express.json())
 
 
@@ -42,12 +43,12 @@ app.get("/",(req,res)=>{
     res.json({message:"Welcome EconNest"});
 })
 
-app.use("/product",productRoute);
-app.use("/auth",auth);
-app.use("/user",user);
-app.use("/order",order);
-app.use("/seller",seller);
-app.use("/review",review);
+app.use("/api/product",productRoute);
+app.use("/api/auth",auth);
+app.use("/api/user",user);
+app.use("/api/order",order);
+app.use("/api/seller",seller);
+app.use("/api/review",review);
 
 
 

@@ -26,7 +26,7 @@ export default function SellerOrders() {
         const token=localStorage.getItem("access_token");
         setLoading(true);
         try{
-            const res=await axios.get("http://localhost:8080/seller/orders",{
+            const res=await axios.get("/api/seller/orders",{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -61,7 +61,7 @@ export default function SellerOrders() {
     const handleCancelOrderDelete=async (req,res)=>{
         try{
             const token=localStorage.getItem("access_token");
-            const res=await axios.delete("http://localhost:8080/seller/orders",{
+            const res=await axios.delete("/api/seller/orders",{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

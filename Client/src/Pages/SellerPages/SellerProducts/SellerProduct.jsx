@@ -36,7 +36,7 @@ export default function SellerProduct({product,setProducts}) {
         try{ 
             setLoading(true);
             const token=localStorage.getItem("access_token");
-            const res=await axios.put(`http://localhost:8080/product/${product._id}`,
+            const res=await axios.put(`/api/product/${product._id}`,
                 {
                     product:values
                 },

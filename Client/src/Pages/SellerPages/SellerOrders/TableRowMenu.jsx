@@ -46,7 +46,7 @@ export default function TableRowMenu({orderID,setOrdersList,setOrders}) {
         }
         try{
             const token=localStorage.getItem("access_token");
-            const res=await axios.put(`http://localhost:8080/seller/order/${orderID}`,{
+            const res=await axios.put(`/api/seller/order/${orderID}`,{
                 newStatus:newStatus
             },{
                 headers:{

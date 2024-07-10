@@ -46,7 +46,7 @@ export default function CartItem({item}) {
         try{
             setLoading(true);
             const token=localStorage.getItem("access_token");
-            const res=await axios.put(`http://localhost:8080/user/removeFromCart/${item.product._id}`,{},{
+            const res=await axios.put(`/api/user/removeFromCart/${item.product._id}`,{},{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -103,7 +103,7 @@ export default function CartItem({item}) {
         try{
             setLoading(true);
             const token=localStorage.getItem("access_token");
-            const res=await axios.put(`http://localhost:8080/user/changeCount/${item.product._id}`,{
+            const res=await axios.put(`/api/user/changeCount/${item.product._id}`,{
                 count:parseInt(cartCount)
             },{
                 headers:{

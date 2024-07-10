@@ -33,7 +33,7 @@ export default function UserGoogelAuth() {
                 username:result._tokenResponse.firstName+randomString,
                 email:result._tokenResponse.email
             }
-            const res=await axios.post("http://localhost:8080/auth/user-google",{user});
+            const res=await axios.post("/api/auth/user-google",{user});
             const data=await res.data;
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);

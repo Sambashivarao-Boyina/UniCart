@@ -33,7 +33,7 @@ export default function SellerGoogelAuth() {
                 sellerName:result._tokenResponse.firstName+randomString,
                 email:result._tokenResponse.email
             }
-            const res=await axios.post("http://localhost:8080/auth/seller-google",{seller});
+            const res=await axios.post("/api/auth/seller-google",{seller});
             const data=await res.data;
             if(data.isSuccess){
                 localStorage.setItem("access_token",data.token);

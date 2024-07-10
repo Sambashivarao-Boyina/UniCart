@@ -42,7 +42,7 @@ export default function Cart() {
         try{
             setLoading(true);
             const token=localStorage.getItem("access_token");
-            const res=await axios.get("http://localhost:8080/user/cart", {
+            const res=await axios.get("/api/user/cart", {
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

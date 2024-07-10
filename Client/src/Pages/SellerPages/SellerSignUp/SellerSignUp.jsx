@@ -25,7 +25,7 @@ export function SellerSignUp() {
         try{
             console.log("Seller")
             dispatch(signInStart());
-            const res=await axios.post("http://localhost:8080/auth/seller-signup",{seller});
+            const res=await axios.post("/api/auth/seller-signup",{seller});
             const data=await res.data;
            
             if(data.isSuccess){

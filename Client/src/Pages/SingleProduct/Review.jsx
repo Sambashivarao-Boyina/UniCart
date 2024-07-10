@@ -41,7 +41,7 @@ export default function Review({review,setReviews}) {
     const deleteReviewRequest=async ()=>{
         try{ 
             const token=localStorage.getItem("access_token");  
-            const res=await axios.delete(`http://localhost:8080/review/${review._id}`,{
+            const res=await axios.delete(`/api/review/${review._id}`,{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -83,7 +83,7 @@ export default function Review({review,setReviews}) {
     const updateReviewRequest=async ()=>{
         try{ 
             const token=localStorage.getItem("access_token");  
-            const res=await axios.put(`http://localhost:8080/review/${review._id}`,{
+            const res=await axios.put(`/api/review/${review._id}`,{
                 rating,
                 comment
             },{

@@ -16,7 +16,7 @@ export default function WishListIcon({productId}) {
     const handleLiked = async ()=>{
         try{
             const token=localStorage.getItem("access_token");
-            const res=await axios.put(`http://localhost:8080/user/like/${productId}`,{},{
+            const res=await axios.put(`/api/user/like/${productId}`,{},{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -58,7 +58,7 @@ export default function WishListIcon({productId}) {
         try{
 
             const token=localStorage.getItem("access_token");
-            const res=await axios.put(`http://localhost:8080/user/unlike/${productId}`,{},{
+            const res=await axios.put(`/api/user/unlike/${productId}`,{},{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

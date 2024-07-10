@@ -39,7 +39,7 @@ export default function PlaceOrderDialog({orderDialog,handleOrderDialog,totalCos
             setPlacingOrder(true);
             const token=localStorage.getItem("access_token");
                 
-            const res=await axios.post("http://localhost:8080/order",{
+            const res=await axios.post("/api/order",{
                 orderDetails
             }, {
                 headers:{
