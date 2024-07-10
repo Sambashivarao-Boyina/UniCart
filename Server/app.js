@@ -60,9 +60,9 @@ app.get("*",(req,res)=>{
 
 
 
-app.get("*",(req,res,next)=>{
-    next(new ExpressError(404,"page not found"));
-})
+// app.get("*",(req,res,next)=>{
+//     next(new ExpressError(404,"page not found"));
+// })
 
 app.use((err,req,res,next)=>{
     if (res.headersSent) {
