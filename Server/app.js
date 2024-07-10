@@ -57,6 +57,10 @@ app.get("*",(req,res,next)=>{
 })
 
 app.use((err,req,res,next)=>{
+    if (res.headersSent) {
+        return next(err);
+    }
+
     let {status=500,message="some error"}=err;
     res.status(status).json({message,isSuccess:false});
 })
