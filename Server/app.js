@@ -60,7 +60,7 @@ app.get("*",(req,res)=>{
 
 
 
-// app.get("*",(req,res,next)=>{
+// app.get("/*",(req,res,next)=>{
 //     next(new ExpressError(404,"page not found"));
 // })
 

@@ -2,7 +2,6 @@
 const withMT = require("@material-tailwind/react/utils/withMT");
 
 export default withMT({
-  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -13,6 +12,7 @@ export default withMT({
     },
     extend: {},
   },
+  darkMode: false, // Disable dark mode
   plugins: [
     require('daisyui'),
     function ({ addBase, addComponents, addUtilities, theme }) {
@@ -32,7 +32,10 @@ export default withMT({
         '.no-spinner': {
           '-moz-appearance': 'textfield',
         },
-      })
+      });
     }
   ],
-})
+  daisyui: {
+    themes: ["light"], // Use only the light theme
+  },
+});
