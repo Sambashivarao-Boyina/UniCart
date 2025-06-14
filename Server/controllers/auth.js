@@ -24,6 +24,7 @@ module.exports.userSignUp=async (req,res)=>{
 
     const token=jwt.sign({id:savedUser._id,person:"User"},process.env.SECEAT_KEY,{expiresIn:"7d"});
     
+    //savedUser._doc the _doc will exclued the mongodb meta data
     const {password,...rest}=savedUser._doc;
 
     res.status(201).json({user:rest,token,message:"User created Successfully",isSuccess:true});

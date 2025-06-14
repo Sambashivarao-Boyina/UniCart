@@ -7,10 +7,10 @@ const cors=require("cors");
 const path=require("path");
 
 
-if(process.env!=="production"){
+if(process.env.NODE_ENV !=="production"){
     dotenv.config();
 }
-
+                            
 app.use(express.static(path.join(__dirname,"/dist")));
 
 

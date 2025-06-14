@@ -1,4 +1,4 @@
-const User=require("../models/user");
+    const User=require("../models/user");
 const Product=require("../models/product");
 const ExpressError=require("../util/ExpressError")
 const Order=require("../models/order");
